@@ -4,10 +4,6 @@
   var note = document.getElementById('next-event-note');
   if (!note) return;
 
-  var title = note.querySelector('.next-event-note__title');
-  var poster = note.querySelector('.next-event-note__poster');
-  var date = note.querySelector('.next-event-note__date');
-  var status = note.querySelector('.next-event-note__status');
   var close = note.querySelector('.next-event-note__close');
   var event = null;
   var dismissalKey = 'lsvz-dismissed-event';
@@ -19,12 +15,6 @@
     var values = {};
     parts.forEach(function (part) { values[part.type] = part.value; });
     return values.year + '-' + values.month + '-' + values.day;
-  }
-
-  function translateEvent() {
-    if (!event) return;
-    status.textContent = window.LSVZ_I18N.t('homeNotice.' + event.availability);
-    window.LSVZ_I18N.refresh(note);
   }
 
   function showAfterIntro() {
@@ -52,7 +42,15 @@
       try { window.sessionStorage.setItem(dismissalKey, event.id); } catch (error) { /* Session storage is optional. */ }
     }
   });
-  document.addEventListener('lsvz:languagechange', translateEvent);
+  if ('IntersectionObserver' in window) {
+    var visibility = new window.IntersectionObserver(function (entries) {
+      note.classList.toggle('is-offscreen', !entries[0].isIntersecting);
+    });
+    visibility.observe(note);
+  }
+  document.addEventListener('visibilitychange', function () {
+    note.classList.toggle('is-paused', document.hidden);
+  });
 
   window.fetch('events-upcoming.html', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Upcoming events are unavailable');
@@ -64,8 +62,7 @@
     var events = Array.prototype.map.call(page.querySelectorAll('.upcoming-events .upcoming-event'), function (card) {
       var time = card.querySelector('time[datetime]');
       var heading = card.querySelector('h2');
-      var image = card.querySelector('.upcoming-event__poster img');
-      if (!time || !heading || !image) return null;
+      if (!time || !heading) return null;
       var day = time.getAttribute('datetime');
       var ends = card.getAttribute('data-event-end');
       if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || (ends ? Date.parse(ends) <= now : day < today)) return null;
@@ -73,21 +70,14 @@
         id: day + ':' + heading.textContent.trim(),
         day: day,
         start: card.getAttribute('data-event-start') || day,
-        title: heading.textContent.trim(),
-        poster: image.getAttribute('src'),
-        availability: card.querySelector('.upcoming-event__actions a') ? 'tickets' :
-          card.querySelector('.upcoming-event__status') ? 'free' : 'soon'
+        title: heading.textContent.trim()
       };
     }).filter(Boolean);
     if (!events.length) return;
     events.sort(function (a, b) { return a.start.localeCompare(b.start); });
     event = events[0];
     try { if (window.sessionStorage.getItem(dismissalKey) === event.id) return; } catch (error) { /* Show the notice anyway. */ }
-    title.textContent = event.title;
-    poster.src = event.poster;
-    date.setAttribute('datetime', event.day);
-    date.setAttribute('data-event-date', event.day);
-    translateEvent();
+    note.dataset.eventId = event.id;
     showAfterIntro();
   }).catch(function () { /* Keep the notice hidden if the calendar cannot be read. */ });
 })();
