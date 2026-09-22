@@ -1,9 +1,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 
 const root = path.resolve('.');
 const dest = path.resolve('dist');
 if (path.dirname(dest) !== root || path.basename(dest) !== 'dist') throw new Error('Invalid build path');
+const assetVersions = new Map();
 
 const csp = [
   "default-src 'self'",
@@ -44,6 +46,16 @@ function hardenHtml(filePath) {
     '</body>',
     `  <script src="${prefix}assets/js/analytics-consent.js" defer></script>\n</body>`
   );
+  // GitHub Pages may keep old CSS/JS in a visitor's browser after deployment.
+  // Content hashes give every changed file a new URL while leaving source HTML simple.
+  html = html.replace(/(href|src)="((?:\.\.\/)?assets\/(?:css|js)\/[^"?#]+\.(?:css|js))(?:\?[^\"]*)?"/g, (match, attribute, url) => {
+    const asset = path.resolve(path.dirname(filePath), url);
+    if (!asset.startsWith(dest + path.sep) || !fs.existsSync(asset)) throw new Error(`Missing build asset: ${url}`);
+    if (!assetVersions.has(asset)) {
+      assetVersions.set(asset, crypto.createHash('sha256').update(fs.readFileSync(asset)).digest('hex').slice(0, 12));
+    }
+    return `${attribute}="${url}?v=${assetVersions.get(asset)}"`;
+  });
   fs.writeFileSync(filePath, html);
 }
 

@@ -399,7 +399,7 @@
 
 /* Home notice: a compact event ticket that appears after the opening. */
 .next-event-note {
-  position: fixed;
+  position: absolute;
   right: clamp(16px, 3vw, 40px);
   bottom: clamp(16px, 3vw, 40px);
   z-index: 95;
@@ -1492,82 +1492,6 @@ a.staff-card__network:focus-visible {
   background: var(--bone-050);
   transform: translateY(-2px);
   outline: none;
-}
-
-/* Collapsed by default via the 0fr row track; the hover/focus state opens
-   it to 1fr so the height (and the name/role above it) animate smoothly
-   without a fixed max-height guess. */
-.staff-card__extra {
-  display: none;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: grid-template-rows 0.4s var(--ease-out-expo), opacity 0.3s ease;
-}
-
-.staff-card:hover .staff-card__extra,
-.staff-card:focus-within .staff-card__extra {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-/* Touch has no sustained hover to reveal this on, which would otherwise
-   make the location + social links unreachable — so it just stays open
-   there. Desktop's hover/focus reveal above is untouched. */
-@media (hover: none) {
-  .staff-card__extra {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-}
-
-.staff-card__extra-inner {
-  overflow: hidden;
-  min-height: 0;
-  padding-top: var(--space-3);
-}
-
-.staff-card__location {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: var(--step--1);
-  color: var(--bone-050);
-  opacity: 0.9;
-}
-
-.staff-card__location svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-}
-
-.staff-card__social {
-  display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
-}
-
-.staff-card__social a {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1.5px solid color-mix(in srgb, var(--bone-050) 45%, transparent);
-  border-radius: 999px;
-  color: var(--bone-050);
-  transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease, background var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
-}
-
-.staff-card__social a:hover {
-  border-color: var(--bone-050);
-  background: var(--bone-050);
-  color: var(--accent-deep);
-  transform: translateY(-2px);
-}
-
-.staff-card__social svg {
-  width: 14px;
-  height: 14px;
 }
 
 /* History timeline — vertical, scroll-drawn, expandable ---------------------- */
