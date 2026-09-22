@@ -88,9 +88,6 @@
       "eventsUpcoming.placeLabel": "Place",
       "eventsUpcoming.bqm.body": "Start the semester with sunset views from Polyterrasse, DJ Moontea and a mix of Latin house, reggaeton, salsa and bachata. Come by whenever you like: entry is free.",
       "eventsUpcoming.delirio.body": "DELIRIO returns for its third edition at JADE Club: a Latin party with reggaeton, club classics and pop anthems until the early hours.",
-      "homeNotice.label": "Upcoming event",
-      "homeNotice.cta": "Don't miss our next event",
-      "homeNotice.close": "Close event notice",
 
       "eventsPast.kicker": "Look back",
       "eventsPast.title": "Past events",
@@ -209,9 +206,6 @@
       "eventsUpcoming.placeLabel": "Lugar",
       "eventsUpcoming.bqm.body": "Empieza el semestre con vistas al atardecer desde Polyterrasse, DJ Moontea y una mezcla de latin house, reguetón, salsa y bachata. Ven cuando quieras: la entrada es libre.",
       "eventsUpcoming.delirio.body": "DELIRIO vuelve con su tercera edición en JADE Club: una fiesta latina con reguetón, club classics y pop anthems hasta la madrugada.",
-      "homeNotice.label": "Próximo evento",
-      "homeNotice.cta": "No te pierdas nuestro próximo evento",
-      "homeNotice.close": "Cerrar aviso",
 
       "eventsPast.kicker": "Mirando atrás",
       "eventsPast.title": "Eventos pasados",
@@ -330,9 +324,6 @@
       "eventsUpcoming.placeLabel": "Ort",
       "eventsUpcoming.bqm.body": "Starte das Semester mit Sonnenuntergang über der Polyterrasse, DJ Moontea und einem Mix aus Latin House, Reggaeton, Salsa und Bachata. Komm einfach vorbei: Der Eintritt ist frei.",
       "eventsUpcoming.delirio.body": "DELIRIO kehrt für die dritte Ausgabe in den JADE Club zurück: eine Latin-Party mit Reggaeton, Club Classics und Pop-Hymnen bis in die frühen Morgenstunden.",
-      "homeNotice.label": "Kommendes Event",
-      "homeNotice.cta": "Verpass unser nächstes Event nicht",
-      "homeNotice.close": "Event-Hinweis schliessen",
 
       "eventsPast.kicker": "Rückblick",
       "eventsPast.title": "Vergangene Events",

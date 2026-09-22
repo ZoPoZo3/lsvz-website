@@ -34,19 +34,6 @@ test('Rapid gallery close cancels an unfinished transition',async({page})=>{awai
 
 test('Photo dimensions preserve aspect ratio',async({page})=>{await page.goto('/events-past/white-party.html');const img=page.locator('.masonry img').first();await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate(i=>i.complete&&i.naturalWidth>0)).toBe(true);const ratio=await img.evaluate(i=>Math.abs(i.clientWidth/i.clientHeight-i.naturalWidth/i.naturalHeight));expect(ratio).toBeLessThan(.02);});
 
-test('Home notice follows the nearest scheduled event and hides with an empty calendar',async({page})=>{
- let calendar='<div class="upcoming-events"><article class="upcoming-event"><h2>Later event</h2><picture class="upcoming-event__poster"><img src="assets/img/photos/events-upcoming/delirio-vol-3-480.webp"></picture><time datetime="2099-10-09"></time><div class="upcoming-event__actions"><a href="https://example.com/tickets">Tickets</a></div></article><article class="upcoming-event"><h2>First event</h2><picture class="upcoming-event__poster"><img src="assets/img/photos/events-upcoming/bqm-tardeo-480.webp"></picture><time datetime="2099-09-25"></time><div class="upcoming-event__actions"><a href="https://example.com/tickets">Tickets</a></div></article></div>';
- await page.route('**/events-upcoming.html',route=>route.fulfill({status:200,contentType:'text/html',body:calendar}));
- await page.goto('/index.html');await page.evaluate(()=>document.body.classList.add('intro-done'));
- const note=page.locator('#next-event-note');await expect(page.locator('.home-hero > #next-event-note')).toHaveCount(1);await expect(note).toBeVisible();await expect(note).toHaveAttribute('data-event-id','2099-09-25:First event');await expect(note.locator('a')).toHaveAttribute('href','events-upcoming.html');await expect(note.locator('a')).toHaveText('No te pierdas nuestro próximo evento');
- await page.evaluate(()=>window.LSVZ_I18N.setLang('de'));await expect(note.locator('a')).toHaveText('Verpass unser nächstes Event nicht');
- await note.locator('button').click();await expect(note).toBeHidden();
- calendar='<div class="upcoming-events"><article class="upcoming-event"><h2>New event</h2><picture class="upcoming-event__poster"><img src="assets/img/photos/events-upcoming/bqm-tardeo-480.webp"></picture><time datetime="2099-11-01"></time><p class="upcoming-event__status">Free</p></article></div>';
- await page.reload();await page.evaluate(()=>document.body.classList.add('intro-done'));await expect(note).toBeVisible();await expect(note).toHaveAttribute('data-event-id','2099-11-01:New event');
- calendar='<div class="upcoming-events"></div>';
- await page.reload();await page.evaluate(()=>document.body.classList.add('intro-done'));await page.waitForLoadState('networkidle');await expect(note).toBeHidden();
-});
-
 test('Membership and staff show only confirmed details',async({page})=>{
  await page.goto('/join.html');await expect(page.locator('.join-benefits')).toHaveCount(0);await expect(page.getByRole('link',{name:/formulario/i})).toBeVisible();
  await page.goto('/staff.html');await expect(page.locator('.staff-card__network[role="img"]')).toHaveCount(0);await expect(page.locator('.staff-card a[href="#"]')).toHaveCount(0);await expect(page.getByRole('link',{name:'LinkedIn de Aram Vartanian'})).toHaveAttribute('href','https://www.linkedin.com/in/aramvartanian1');await expect(page.getByRole('link',{name:'LinkedIn de Aram Vartanian'})).toBeVisible();expect(await page.getByRole('link',{name:'LinkedIn de Aram Vartanian'}).evaluate(link=>getComputedStyle(link).opacity)).toBe('1');await expect(page.locator('.staff-card').filter({hasText:'Saúl Aguilar'}).locator('.staff-card__network')).toHaveCount(0);
