@@ -18,6 +18,16 @@
 
   if (navToggle && nav) {
     var mobileNav = window.matchMedia('(max-width: 1100px)');
+    var languageSwitch = nav.querySelector('.lang-switch');
+    var headerBar = navToggle.parentElement;
+    var placeLanguageSwitch = function () {
+      if (!languageSwitch) return;
+      languageSwitch.querySelector('.lang-switch__trigger').setAttribute('aria-expanded', 'false');
+      if (mobileNav.matches) headerBar.insertBefore(languageSwitch, navToggle);
+      else nav.appendChild(languageSwitch);
+    };
+    placeLanguageSwitch();
+    mobileNav.addEventListener('change', placeLanguageSwitch);
     var navBackground = document.querySelectorAll('main, .site-footer');
     var previousOverflow = '';
     var header = document.querySelector('.site-header');

@@ -569,6 +569,11 @@
   .lang-switch {
     margin-top: var(--space-6);
   }
+  .site-header__bar > .lang-switch {
+    margin-top: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
 }
 
 /* Page-entry intro -----------------------------------------------------------

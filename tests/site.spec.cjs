@@ -2,6 +2,8 @@ const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');
 for(const width of [320,390,768,1024,1440]) test('Navigation and languages at '+width+'px',async({page})=>{
  await page.setViewportSize({width,height:900});await page.goto('/events-upcoming.html');
+ if(width<=1100){await expect(page.locator('.site-header__bar > .lang-switch')).toBeVisible();await expect(page.locator('#primary-nav > .lang-switch')).toHaveCount(0);await page.locator('.lang-switch__trigger').click();await page.locator('.lang-switch__option[data-lang="en"]').click();await expect(page.locator('html')).toHaveAttribute('lang','en');}
+ else {await expect(page.locator('#primary-nav > .lang-switch')).toBeVisible();}
  for(const lang of ['es','en','de']){
   await page.evaluate(lang=>window.LSVZ_I18N.setLang(lang),lang);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
