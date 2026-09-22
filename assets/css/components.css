@@ -1,0 +1,1122 @@
+/* ==========================================================================
+   LSVZ — Shared components: nav, footer, tile divider, buttons, cards
+   ========================================================================== */
+
+/* Tile divider -------------------------------------------------------------
+   The signature azulejo strip. Used sparingly between major sections. */
+
+@keyframes tile-drift {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -30px;
+  }
+}
+
+.tile-divider {
+  height: 30px;
+  background-image: var(--tile-red);
+  background-repeat: repeat-x;
+  background-size: 30px 30px;
+  background-position: center;
+  animation: tile-drift 8s linear infinite;
+}
+
+.tile-divider--bone {
+  background-image: var(--tile-bone);
+}
+
+/* Logotype paint-on -----------------------------------------------------------
+   The mark fills in following the line it was drawn with, not across the
+   x-axis. An earlier pass used a left-to-right gradient mask, but a mask
+   reveals everything sharing an x position at the same instant — so wherever
+   the logotype stacks two strokes above one another they popped in together
+   instead of in the order the line runs.
+
+   Instead the path is drawn a second time as a very thick stroke and clipped
+   to the letterforms (see the markup: a <clipPath> of the shape around a
+   stroked copy). Advancing stroke-dashoffset walks a paint head along the
+   outline; the clip keeps the paint inside the letters. The result is the
+   fill travelling the path's own route.
+
+   stroke-width 150 is set off the artwork: the letter strokes measure 43-56
+   units, and a centred stroke only puts half its width inside the shape, so
+   75 per side covers the thickest of them with room to spare. The overspill
+   is clipped away. */
+.brand-logo__paint {
+  fill: none;
+  stroke: currentColor;
+  /* The letters measure 51 units at their thickest, so 58 is the tightest
+     stroke that still fills them everywhere (verified: 0 uncovered points of
+     70k sampled). Tight matters: the head is a flat edge held perpendicular
+     to the path, and its corners reach sideways by half the width — at 100
+     they poked into the Z bottom bar and the V while the head was still
+     coming down the diagonal above, which read as the fill running ahead of
+     itself. */
+  stroke-width: 58;
+  /* Butt, so the paint head stays a flat edge travelling along the letter
+     rather than a dome reaching ahead of itself. */
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  /* Length of the skeleton path, measured in the browser. */
+  stroke-dasharray: 1614;
+  stroke-dashoffset: 1614;
+}
+
+@keyframes logo-paint-on {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo__paint {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Accent rule ---------------------------------------------------------------
+   A short rule that only spans the center of the page, not edge to edge —
+   deliberately narrower than .wrap so it reads as a quiet break inside a
+   section, not a full section divider like .tile-divider above. */
+.accent-rule {
+  position: relative;
+  width: min(240px, 50%);
+  height: 1px;
+  margin: var(--space-8) auto;
+  background: color-mix(in srgb, var(--ink-900) 18%, transparent);
+}
+
+.accent-rule::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-deep);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.tile-frame {
+  display: block;
+  position: relative;
+  padding: 10px;
+  border-radius: calc(var(--radius) + 6px);
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.tile-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--tile-red);
+  background-size: 20px 20px;
+  border-radius: calc(var(--radius) + 6px);
+}
+
+.tile-frame__media {
+  position: relative;
+  z-index: 1;
+}
+
+.tile-frame__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--pp-ratio, 4 / 3);
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+/* Skip link ---------------------------------------------------------------- */
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 200;
+  background: var(--ink-900);
+  color: var(--bone-050);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* Header / nav --------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+/* The frosted-glass backdrop lives on a ::before instead of directly on
+   .site-header. A backdrop-filter (like a transform) on an element turns it
+   into the containing block for any position:fixed descendant — and the
+   mobile nav drawer below is exactly that, a fixed descendant of this
+   header. Left on .site-header itself, the drawer would size/position
+   itself against the header's own small box instead of the real viewport
+   (real phones showed this as a half-width, off-canvas-that-never-fully-
+   hides panel that made the whole page scroll sideways). A ::before has no
+   descendants of its own to trap, so it can carry the blur without any of
+   that. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px) saturate(1.2);
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: color-mix(in srgb, var(--ink-900) 10%, transparent);
+  box-shadow: 0 8px 24px -18px color-mix(in srgb, var(--ink-900) 60%, transparent);
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-1);
+  letter-spacing: 0.01em;
+  color: var(--fg);
+}
+
+.brand__mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+/* The header wordmark is the same logotype as the intros, but static: it is
+   on screen permanently, so it carries no clip and no dash animation. Sized
+   by height in em so it tracks .brand font-size and keeps its own aspect
+   ratio; it inherits currentColor from .brand, as the word it replaced did. */
+.brand__name {
+  display: block;
+  height: 0.92em;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--space-5);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Nav items ------------------------------------------------------------------
+   Two borrowed pieces of the site's own vocabulary, rather than an effect
+   imported from elsewhere: the page's azulejo motif as a chip beside the
+   label, and — as the underline — a miniature of .tile-divider, the same
+   azulejo ribbon that separates every section further down the page. Hovering
+   an item unrolls that page's ribbon beneath it and brings its motif in from
+   the side, so the header previews the destination in the site's own terms. */
+.nav__links a {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-2);
+  white-space: nowrap;
+  transition: color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+
+/* Each destination announces itself with its own azulejo: hovering a link
+   spins that page's motif in beside the label, so the shape you're about to
+   land on shows up a moment before you get there. Absolutely positioned
+   rather than laid out inline, so revealing it never nudges the other nav
+   items sideways.
+
+   Painted, not tiled: the pattern SVGs carry a bone backing plate, which at
+   this size would read as a cream square with something on it. Masking a
+   solid accent fill with the motif leaves only the shape. */
+.nav__links a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% - var(--space-2) + 2px);
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  -webkit-mask-image: var(--nav-glyph);
+  mask-image: var(--nav-glyph);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: 0;
+  transform: translateY(-50%) scale(0.3) rotate(-90deg);
+  transition: opacity var(--dur-fast) ease, transform var(--dur-med) var(--ease-out-expo);
+}
+
+.nav__links a:hover::before,
+.nav__links a:focus-visible::before {
+  opacity: 1;
+  transform: translateY(-50%) scale(1) rotate(0deg);
+}
+
+/* Restrained on purpose: the ribbon and the chip carry the moment, so the
+   label only deepens in colour and lifts a hair. Earlier passes scaled it
+   hard enough to collide with its neighbours, which read as noise. */
+.nav__links a:hover,
+.nav__links a:focus-visible {
+  color: var(--accent-deep);
+  transform: translateY(-2px);
+}
+
+.nav__links a[href$="index.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cmask id='m'%3E%3Cg fill='%23fff'%3E%3Cpolygon points='50,12 55.7,36.1 76.9,23.1 63.9,44.3 88,50 63.9,55.7 76.9,76.9 55.7,63.9 50,88 44.3,63.9 23.1,76.9 36.1,55.7 12,50 36.1,44.3 23.1,23.1 44.3,36.1'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='6' fill='%23000'/%3E%3C/mask%3E%3Crect width='100' height='100' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-red.svg");
+}
+.nav__links a[href$="history.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cmask id='m'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='50' cy='24' r='22'/%3E%3Ccircle cx='76' cy='50' r='22'/%3E%3Ccircle cx='50' cy='76' r='22'/%3E%3Ccircle cx='24' cy='50' r='22'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='7' fill='%23000'/%3E%3C/mask%3E%3Crect width='100' height='100' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-quatrefoil-red.svg");
+}
+.nav__links a[href$="events-upcoming.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cmask id='m'%3E%3Cg fill='%23fff'%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(0 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(45 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(90 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(135 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(180 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(225 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(270 50 50)'/%3E%3Cpath d='M50,8 C63,24 63,40 50,50 C37,40 37,24 50,8 Z' transform='rotate(315 50 50)'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='7' fill='%23000'/%3E%3C/mask%3E%3Crect width='100' height='100' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-bloom-red.svg");
+}
+.nav__links a[href$="events-past.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cmask id='m'%3E%3Cg fill='%23fff'%3E%3Crect x='22' y='22' width='56' height='56'/%3E%3Cpolygon points='50,10 90,50 50,90 10,50'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='7' fill='%23000'/%3E%3C/mask%3E%3Crect width='100' height='100' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-octagram-red.svg");
+}
+.nav__links a[href$="staff.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23fff'%3E%3Cpath d='M0,0 Q26,8 38,38 Q8,26 0,0 Z'/%3E%3Cpath d='M100,0 Q74,8 62,38 Q92,26 100,0 Z'/%3E%3Cpath d='M100,100 Q74,92 62,62 Q92,74 100,100 Z'/%3E%3Cpath d='M0,100 Q26,92 38,62 Q8,74 0,100 Z'/%3E%3Crect x='46' y='46' width='8' height='8' transform='rotate(45 50 50)'/%3E%3C/g%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-petals-red.svg");
+}
+.nav__links a[href$="join.html"] {
+  --nav-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cmask id='m'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='80' cy='50' r='13'/%3E%3Ccircle cx='74.3' cy='67.6' r='13'/%3E%3Ccircle cx='59.3' cy='78.5' r='13'/%3E%3Ccircle cx='40.7' cy='78.5' r='13'/%3E%3Ccircle cx='25.7' cy='67.6' r='13'/%3E%3Ccircle cx='20' cy='50' r='13'/%3E%3Ccircle cx='25.7' cy='32.4' r='13'/%3E%3Ccircle cx='40.7' cy='21.5' r='13'/%3E%3Ccircle cx='59.3' cy='21.5' r='13'/%3E%3Ccircle cx='74.3' cy='32.4' r='13'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='9' fill='%23000'/%3E%3C/mask%3E%3Crect width='100' height='100' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E");
+  --nav-tile: url("../img/patterns/azulejo-wreath-red.svg");
+}
+
+/* A plain hairline, not a strip of tiles. An earlier pass ran a miniature
+   .tile-divider along here; it was too much pattern for something sitting
+   under every label, so the azulejo now appears only as the chip at the
+   side and this went back to a simple rule that sweeps in from the left. */
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: var(--space-2);
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: right var(--dur-med) var(--ease-out-expo);
+}
+
+.nav__links a:hover::after,
+.nav__links a:focus-visible::after,
+.nav__links a[aria-current="page"]::after {
+  right: var(--space-2);
+}
+
+.nav__links a[aria-current="page"] {
+  color: var(--accent-deep);
+}
+
+/* The page you're already on wears its motif and its ribbon permanently, so
+   the header always carries a trace of the page below it. */
+.nav__links a[aria-current="page"]::before {
+  opacity: 1;
+  transform: translateY(-50%) scale(1) rotate(0deg);
+}
+
+.nav__links a:active {
+  transform: translateY(0);
+}
+
+.lang-switch {
+  position: relative;
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+
+.lang-switch__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: color-mix(in srgb, var(--ink-900) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink-900) 12%, transparent);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  color: var(--ink-900);
+  letter-spacing: 0.02em;
+  transition: background var(--dur-fast) ease;
+}
+
+.lang-switch__trigger:hover {
+  background: color-mix(in srgb, var(--ink-900) 10%, transparent);
+}
+
+.lang-switch__chevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.lang-switch__trigger[aria-expanded="true"] .lang-switch__chevron {
+  transform: rotate(180deg);
+}
+
+.lang-switch__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid color-mix(in srgb, var(--ink-900) 12%, transparent);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 32px -16px color-mix(in srgb, var(--ink-900) 50%, transparent);
+  padding: 4px;
+  z-index: 10;
+}
+
+.lang-switch__trigger[aria-expanded="true"] ~ .lang-switch__menu {
+  display: block;
+}
+
+.lang-switch__option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  color: var(--ink-900);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: left;
+  transition: background var(--dur-fast) ease;
+}
+
+.lang-switch__option:hover {
+  background: color-mix(in srgb, var(--ink-900) 8%, transparent);
+}
+
+.lang-toggle__dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.lang-switch__option[data-lang="en"] .lang-toggle__dot {
+  background: #2a5c46;
+}
+.lang-switch__option[data-lang="es"] .lang-toggle__dot {
+  background: #b23a28;
+}
+.lang-switch__option[data-lang="de"] .lang-toggle__dot {
+  background: #1f3c5c;
+}
+
+.lang-switch[data-active="en"] .lang-switch__trigger .lang-toggle__dot {
+  background: #2a5c46;
+}
+.lang-switch[data-active="es"] .lang-switch__trigger .lang-toggle__dot {
+  background: #b23a28;
+}
+.lang-switch[data-active="de"] .lang-switch__trigger .lang-toggle__dot {
+  background: #1f3c5c;
+}
+
+.lang-switch[data-active="en"] .lang-switch__option[data-lang="en"],
+.lang-switch[data-active="es"] .lang-switch__option[data-lang="es"],
+.lang-switch[data-active="de"] .lang-switch__option[data-lang="de"] {
+  display: none;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1.5px solid var(--ink-900);
+  border-radius: var(--radius);
+  width: 42px;
+  height: 38px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Two bars, not three — the plain, minimal hamburger Apple's own mobile
+   menu button uses, rather than the fuller three-line glyph. Both bars
+   rotate to meet in the middle as an X on open, so nothing needs to be
+   hidden or faded out the way a third, middle bar would. */
+.nav-toggle span {
+  position: absolute;
+  inset: 0;
+}
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  height: 2px;
+  background: var(--ink-900);
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+.nav-toggle span::before {
+  transform: translateY(-5px);
+}
+.nav-toggle span::after {
+  transform: translateY(5px);
+}
+
+.nav-toggle[aria-expanded="true"] span::before {
+  transform: translateY(0) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] span::after {
+  transform: translateY(0) rotate(-45deg);
+}
+
+@media (max-width: 1100px) {
+  .nav-toggle {
+    display: block;
+  }
+  .nav {
+    position: fixed;
+    inset: 64px 0 0 0;
+    height: calc(100dvh - 64px);
+    background: var(--bg);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--space-6) var(--space-5);
+    transform: translateX(100%);
+    transition: transform var(--dur-med) var(--ease-out-expo);
+    overflow-y: auto;
+    z-index: 1;
+  }
+  .nav.is-open {
+    transform: translateX(0);
+  }
+  .nav__links {
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--step-2);
+    width: 100%;
+  }
+  .nav__links a {
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-3);
+    /* Room on the left for the chip, which sits inside the padding rather
+       than outside the link as it does in the desktop bar. */
+    padding-inline: calc(var(--space-6) + var(--space-2)) var(--space-3);
+  }
+  /* Touch has no hover to reveal the chip on, so on a phone every entry
+     just wears its azulejo outright — that's what makes the motif readable
+     here at all. Bigger than the desktop chip to match the larger type. */
+  .nav__links a::before {
+    right: auto;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    opacity: 1;
+    transform: translateY(-50%) scale(1) rotate(0deg);
+  }
+  .nav__links a:hover,
+  .nav__links a:focus-visible {
+    transform: none;
+  }
+  .nav__links a::after {
+    left: calc(var(--space-6) + var(--space-2));
+  }
+  .nav__links a:hover::after,
+  .nav__links a[aria-current="page"]::after {
+    right: var(--space-3);
+  }
+  .lang-switch {
+    margin-top: var(--space-6);
+  }
+}
+
+/* Page-entry intro -----------------------------------------------------------
+   Every page other than the home page opens with a short replay of the home
+   hero's mark: the flower spins in centred, slides left and settles down to
+   size as the wordmark wipes out beside it, then the whole curtain lifts on
+   the page. Same choreography as .hero__brand-* in pages.css, run faster
+   because it plays on every navigation rather than once on arrival.
+
+   Entirely CSS with `forwards` fills, and pointer-events: none throughout —
+   if a stylesheet or script ever failed to load, this can't leave the page
+   covered or unclickable. */
+.page-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  pointer-events: none;
+  animation: page-intro-out 0.38s var(--ease-out-expo) 0.8s forwards;
+}
+
+.page-intro__row {
+  display: grid;
+  grid-template-columns: auto 0fr;
+  column-gap: 0;
+  align-items: center;
+  animation: page-intro-expand 0.35s var(--ease-out-expo) 0.35s forwards;
+}
+
+.page-intro__icon {
+  display: block;
+  width: clamp(46px, 7vw, 74px);
+  aspect-ratio: 1;
+  background: var(--accent-deep);
+  -webkit-mask-image: var(--brand-mask);
+  mask-image: var(--brand-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: 0;
+  animation: page-intro-icon 0.7s var(--ease-out-expo) forwards;
+}
+
+/* Clipping window driven by the grid track, so the wordmark is wiped out
+   from the flower's edge rather than just fading in place. */
+.page-intro__name-wrap {
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Same inlined logotype as the home hero, smaller and quicker. */
+.page-intro__name {
+  display: block;
+  width: clamp(120px, 19vw, 220px);
+  height: auto;
+  color: var(--accent-deep);
+}
+
+.page-intro__name .brand-logo__paint {
+  animation: logo-paint-on 0.46s cubic-bezier(0.4, 0, 0.25, 1) 0.34s forwards;
+}
+
+@keyframes page-intro-icon {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) rotate(-300deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.7) rotate(0deg);
+  }
+  57% {
+    transform: scale(1.7) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes page-intro-expand {
+  to {
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-4);
+  }
+}
+
+@keyframes page-intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-intro {
+    animation: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Scrim behind the open mobile drawer — tapping it closes the menu, same as
+   Escape. Created once by main.js, not present in any page's markup. */
+.nav-scrim {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: color-mix(in srgb, var(--ink-900) 45%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-med) ease;
+  }
+  .nav-scrim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Buttons --------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out-expo), background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--bone-050);
+  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.btn--primary:hover {
+  background: var(--red-600);
+  box-shadow: 0 14px 28px -12px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: currentColor;
+  color: var(--fg);
+}
+
+.btn--on-red {
+  color: var(--fg-on-red);
+}
+
+.btn--on-red.btn--ghost:hover {
+  background: color-mix(in srgb, var(--bone-050) 12%, transparent);
+}
+
+/* Footer ------------------------------------------------------------------ */
+
+.site-footer {
+  background: var(--ink-900);
+  color: var(--bone-100);
+}
+
+.site-footer .wrap {
+  padding-block: var(--space-8);
+  display: grid;
+  gap: var(--space-7);
+  grid-template-columns: 1.2fr 1fr 1fr;
+}
+
+@media (max-width: 720px) {
+  .site-footer .wrap {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.site-footer h4 {
+  color: var(--bone-050);
+  margin-bottom: var(--space-3);
+}
+
+.site-footer a {
+  text-decoration: none;
+  color: var(--bone-200);
+}
+
+.site-footer a:hover {
+  color: var(--bone-050);
+}
+
+.footer-links li {
+  margin-bottom: var(--space-2);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-1);
+  color: var(--bone-050);
+  margin-bottom: var(--space-3);
+}
+
+.footer-brand svg {
+  width: 30px;
+  height: 30px;
+}
+
+.footer-bottom {
+  border-top: 1px solid color-mix(in srgb, var(--bone-050) 14%, transparent);
+  font-size: var(--step--1);
+  color: var(--bone-300);
+  padding-block: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.social-row {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.social-row a {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid color-mix(in srgb, var(--bone-050) 30%, transparent);
+  border-radius: 999px;
+  transition: border-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.social-row a:hover {
+  border-color: var(--red-400);
+  transform: translateY(-2px);
+}
+
+.social-row svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Cards -------------------------------------------------------------------- */
+
+.card {
+  background: var(--bg-panel);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--ink-900) 8%, transparent);
+}
+
+.tag {
+  display: inline-block;
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-deep);
+  background: var(--red-100);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+
+/* Placeholder photo (until real assets are supplied) ----------------------- */
+
+.placeholder-photo {
+  position: relative;
+  aspect-ratio: var(--pp-ratio, 4 / 3);
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.placeholder-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--bone-050) 55%, transparent),
+      color-mix(in srgb, var(--bone-050) 55%, transparent)
+    ),
+    var(--tile-red);
+  background-size: 100% 100%, 26px 26px;
+}
+
+.placeholder-photo span {
+  position: relative;
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-deep);
+  background: var(--bone-050);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+
+/* Photo lightbox -------------------------------------------------------------
+   In-page viewer for a gallery's full-size photos (assets/js/lightbox.js
+   builds the markup and drives it). Arrows, keyboard, and dragging all
+   slide the current photo out while the next one slides in from the
+   opposite side — same plain, direct motion either way. */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 9, 6, 0.92);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+.lightbox__stage {
+  position: relative;
+  width: min(92vw, 1400px);
+  height: min(86vh, 1400px);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.lightbox__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.lightbox__close,
+.lightbox__btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.lightbox__close:hover,
+.lightbox__btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.lightbox__close {
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+}
+
+.lightbox__btn {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+}
+
+.lightbox__btn:hover {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.lightbox__btn--prev {
+  left: 12px;
+}
+
+.lightbox__btn--next {
+  right: 12px;
+}
+
+.lightbox__close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lightbox__btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.lightbox__counter {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px 12px;
+  border-radius: 999px;
+  z-index: 2;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .lightbox__stage {
+    width: 100vw;
+    height: 100dvh;
+  }
+
+  .lightbox__btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .lightbox__btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .lightbox__btn--prev {
+    left: 6px;
+  }
+
+  .lightbox__btn--next {
+    right: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox,
+  .lightbox.is-open {
+    transition: none;
+  }
+}
+/* Interaction repairs: retain the established colours, type and motifs. */
+:root { --step--2: .75rem; }
+.btn, .nav-toggle, .lang-switch__trigger, .lang-switch__option { min-height: 44px; }
+.nav-toggle { min-width: 44px; }
+h1, h2, [data-split-words] .word { overflow-wrap: anywhere; max-width: 100%; }
+html:not(.js) .reveal, html:not(.js) .reveal-item { opacity: 1; transform: none; }
+html:not(.js) .home-hero__veil { display: none; }
+.site-footer .footer-bottom { display: flex; flex-wrap: wrap; }
+.lightbox__btn, .lightbox__close { min-width: 44px; min-height: 44px; }
+.lightbox button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.lightbox__error { position: absolute; z-index: 4; padding: 24px; background: var(--bg); color: var(--fg); text-align: center; border-radius: 8px; }
+.lightbox__error[hidden] { display: none; }
+.lightbox__stage { touch-action: pan-y pinch-zoom; }
+.lightbox__close { top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); }
+@media (max-width: 1100px) {
+  .js .nav:not(.is-open) { visibility: hidden; }
+  .nav { inset-block-start: var(--header-height, 68px); height: calc(100dvh - var(--header-height, 68px)); }
+  html:not(.js) .nav { position: static; height: auto; transform: none; }
+  html:not(.js) .site-header__bar { flex-wrap: wrap; }
+  html:not(.js) .nav-toggle { display: none; }
+}
+
+[data-scroll-words] .scroll-word { opacity: .82; }
+[data-scroll-words] .scroll-word.is-visible { opacity: 1; }
+/* Intrinsic dimensions reserve space; gallery photos retain their ratio. */
+.masonry img { height: auto; }
+[data-scroll-words] .scroll-word { filter: none; }
+.compact-heading { font-size: var(--step-1); font-family: var(--font-body); font-weight: 700; }
+.site-footer .compact-heading { color: var(--bone-050); margin-bottom: var(--space-3); }
+.gallery-item__cap .compact-heading { margin-bottom: var(--space-3); }
+.gallery-item__cap .compact-heading a { color: inherit; text-decoration: none; }
+.has-intro .site-header { animation: none; opacity: 1; transform: none; }
+.history-heading { font-size: var(--step-2); }
+img.timeline-v__media, img.history-epilogue__media { height: auto; }
+
+/* Privacy controls ------------------------------------------------------- */
+.privacy-banner {
+  position: fixed;
+  z-index: 10000;
+  right: clamp(12px, 3vw, 32px);
+  bottom: clamp(12px, 3vw, 32px);
+  left: clamp(12px, 3vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  max-width: 920px;
+  margin-inline: auto;
+  padding: clamp(18px, 3vw, 28px);
+  color: var(--bone-050);
+  background: var(--ink-900);
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 30%);
+}
+
+.privacy-banner__copy { max-width: 58ch; }
+.privacy-banner__copy strong { display: block; margin-bottom: 6px; font: 700 var(--step-0)/1.2 var(--font-display); }
+.privacy-banner__copy p { margin: 0; color: rgb(255 255 255 / 78%); }
+.privacy-banner__copy a, .footer-privacy { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.privacy-banner__actions { display: flex; flex: 0 0 auto; gap: 10px; }
+.privacy-banner .btn { white-space: nowrap; }
+
+.privacy-page { max-width: 860px; }
+.privacy-page section { margin-block: var(--space-7); }
+.privacy-page h2 { margin-bottom: var(--space-3); }
+.privacy-page ul { padding-left: 1.2em; }
+.privacy-page .privacy-language { padding-top: var(--space-6); border-top: 1px solid var(--line); }
+
+@media (max-width: 760px) {
+  .privacy-banner { align-items: stretch; flex-direction: column; }
+  .privacy-banner__actions { display: grid; grid-template-columns: 1fr; }
+  .privacy-banner .btn { width: 100%; }
+}

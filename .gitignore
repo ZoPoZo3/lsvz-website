@@ -1,0 +1,13 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.local/
+.agents/
+.claude/
+.codex/
+.impeccable/
+lsvz-studio/
+_test.ps1
+*.log
+.claude/settings.local.json

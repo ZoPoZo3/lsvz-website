@@ -1,0 +1,375 @@
+/* ==========================================================================
+   LSVZ — Design tokens & base
+   Direction: Andalusian/Valencian azulejo geometry (red/bone) + Swiss restraint.
+   ========================================================================== */
+
+:root {
+  /* No dark palette exists yet, so tell the browser this page is light-only
+     rather than leaving it to guess: on a device in dark mode this keeps
+     native chrome (scrollbars, form controls, etc.) rendered light too,
+     matching a page whose own colors never change. */
+  color-scheme: light;
+
+  /* Palette — warm bone ground, terracotta red carries the surface, ink for text */
+  --bone-050: #fdfbf7;
+  --bone-100: #f6efe4;
+  --bone-200: #efe4d2;
+  --bone-300: #e3d3b8;
+
+  --red-800: #6e1f16;
+  --red-700: #8c2a1e;
+  --red-600: #a83526;
+  --red-500: #b23a28;
+  --red-400: #c1503c;
+  --red-100: #f3ddd2;
+  --red-050: #f9ece5;
+
+  --ink-900: #241209;
+  --ink-700: #3d2115;
+
+  --bg: var(--bone-100);
+  --bg-panel: var(--bone-050);
+  --fg: var(--ink-900);
+  --fg-on-red: var(--bone-050);
+  --accent: var(--red-500);
+  --accent-deep: var(--red-700);
+
+  /* Type */
+  --font-display: "Unbounded", "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, -apple-system, sans-serif;
+
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.92rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.4vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+  --step-3: clamp(1.9rem, 1.6rem + 1.4vw, 2.6rem);
+  --step-4: clamp(2.5rem, 2rem + 2.4vw, 3.8rem);
+  --step-5: clamp(3.2rem, 2.4rem + 4vw, 5.6rem);
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+  --space-10: 10rem;
+
+  --measure: 62ch;
+  --radius: 6px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.32s;
+  --dur-med: 0.6s;
+  --dur-slow: 1s;
+
+  --tile-red: url("../img/patterns/azulejo-red.svg");
+  --tile-bone: url("../img/patterns/azulejo-bone.svg");
+
+  /* The six-petal brand flower as a mask: same geometry as the <svg> mark in
+     the header, punched centre and all. Shared here because both the home
+     hero and the page-entry intro paint a flat colour through it. */
+  --brand-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cmask id='h'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='29' cy='20' r='9'/%3E%3Ccircle cx='24.5' cy='27.79' r='9'/%3E%3Ccircle cx='15.5' cy='27.79' r='9'/%3E%3Ccircle cx='11' cy='20' r='9'/%3E%3Ccircle cx='15.5' cy='12.21' r='9'/%3E%3Ccircle cx='24.5' cy='12.21' r='9'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3.5' fill='%23000'/%3E%3C/mask%3E%3Crect width='40' height='40' fill='%23fff' mask='url(%23h)'/%3E%3C/svg%3E");
+}
+
+/* Language palettes ---------------------------------------------------------
+   Spanish keeps the site's default red. English and German swap the whole
+   red ramp for a deep green / navy that carries the same brand weight —
+   every consumer of --accent, --accent-deep, --red-* picks this up for
+   free since they're all defined in terms of these tokens. The azulejo
+   tile SVGs are flat files and can't read custom properties, so their
+   red is repainted separately via hue-rotate on the elements that use
+   them (see components.css / pages.css). */
+
+:root[lang="en"] {
+  --red-800: #1e4433;
+  --red-700: #2a5c46;
+  --red-600: #366f55;
+  --red-500: #3d7b5f;
+  --red-400: #5c9479;
+  --red-100: #dceae2;
+  --red-050: #eef5f1;
+}
+
+:root[lang="de"] {
+  --red-800: #172b44;
+  --red-700: #1f3c5c;
+  --red-600: #2a4e73;
+  --red-500: #315a82;
+  --red-400: #5479a0;
+  --red-100: #dce6f0;
+  --red-050: #edf3f8;
+}
+
+html[lang="en"] .tile-divider,
+html[lang="en"] .tile-frame::before,
+html[lang="en"] .scroll-expand__frame::before,
+html[lang="en"] .placeholder-photo::before {
+  filter: hue-rotate(145deg) saturate(0.9);
+}
+
+html[lang="de"] .tile-divider,
+html[lang="de"] .tile-frame::before,
+html[lang="de"] .scroll-expand__frame::before,
+html[lang="de"] .placeholder-photo::before {
+  filter: hue-rotate(201deg) saturate(0.95);
+}
+
+/* Reset ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* clip (not hidden) on purpose: hidden makes the root a scroll container,
+     and any ancestor doing that is the single most common reason
+     position: sticky quietly stops sticking partway down a page on mobile
+     browsers — the exact symptom on the scroll-expand hero. clip prevents
+     the same horizontal overflow without creating a scroll context at all.
+     hidden stays as a fallback for the rare browser that predates clip. */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-5);
+  font-weight: 700;
+}
+h2 {
+  font-size: var(--step-4);
+}
+h3 {
+  font-size: var(--step-2);
+}
+h4 {
+  font-size: var(--step-1);
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 var(--space-4);
+  max-width: var(--measure);
+}
+
+a {
+  color: inherit;
+}
+
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Selection / focus / scrollbar — themed, not browser default -------------- */
+
+::selection {
+  background: var(--accent);
+  color: var(--fg-on-red);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+html {
+  scrollbar-color: var(--red-500) var(--bone-200);
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bone-200);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--red-500);
+  border-radius: 8px;
+  border: 2px solid var(--bone-200);
+}
+
+/* Layout utilities --------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.section {
+  padding-block: var(--space-9);
+}
+
+.section--tight {
+  padding-block: var(--space-7);
+}
+
+.section--red {
+  background: var(--accent-deep);
+  color: var(--fg-on-red);
+}
+
+.section--red p {
+  color: var(--bone-100);
+}
+
+.eyebrow-free-heading {
+  max-width: 40ch;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reveal on scroll ---------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out-expo), transform var(--dur-slow) var(--ease-out-expo);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-group.is-visible .reveal-item,
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-med) var(--ease-out-expo), transform var(--dur-med) var(--ease-out-expo);
+}
+
+/* Word-split reveal --------------------------------------------------------- */
+
+[data-split-words] .split-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(16px);
+  transition: opacity 0.6s var(--ease-out-expo), filter 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+
+[data-split-words].is-visible .split-word {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* Scroll-linked word reveal (history quote) ---------------------------------
+   Dimmed rather than fully invisible at rest: main.js toggles .is-visible
+   word by word as the visitor scrolls, and starting from near-zero would
+   read as the same "pop in" the split-word reveal above does — the point
+   here is a slower, continuous brightening tied to scroll, not a reveal. */
+[data-scroll-words] .scroll-word {
+  display: inline-block;
+  opacity: 0.22;
+  filter: blur(2.5px);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+[data-scroll-words] .scroll-word.is-visible {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-words] .scroll-word {
+    transition: none;
+  }
+}
+
+/* Click spark ---------------------------------------------------------------- */
+
+.click-spark {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  animation: spark-fly 0.5s var(--ease-out-expo) forwards;
+}
+
+@keyframes spark-fly {
+  to {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));
+    opacity: 0;
+  }
+}

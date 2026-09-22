@@ -1,0 +1,27 @@
+{
+  "name": "lsvz-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LSVZ static website — development tools only",
+  "scripts": {
+    "dev": "node scripts/serve.cjs",
+    "lint:js": "eslint assets/js",
+    "lint:css": "stylelint assets/css/*.css",
+    "lint:html": "html-validate *.html events-past/*.html",
+    "test": "playwright test",
+    "images": "node scripts/optimize-images.cjs",
+    "build": "node scripts/build.cjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "axe-core": "4.13.0",
+    "chrome-devtools-mcp": "1.9.0",
+    "eslint": "10.10.0",
+    "html-validate": "11.15.0",
+    "impeccable": "4.1.0",
+    "lighthouse": "13.4.1",
+    "node": "24.21.0",
+    "sharp": "0.35.4",
+    "stylelint": "17.15.0"
+  }
+}

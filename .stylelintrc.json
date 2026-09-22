@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "block-no-empty": true,
+    "color-no-invalid-hex": true,
+    "declaration-block-no-duplicate-properties": [true, {"ignore": ["consecutive-duplicates-with-different-values"]}],
+    "declaration-block-no-shorthand-property-overrides": true,
+    "function-calc-no-unspaced-operator": true,
+    "property-no-unknown": [true, {"checkPrefixed": false}],
+    "unit-no-unknown": true,
+    "keyframe-declaration-no-important": true
+  }
+}

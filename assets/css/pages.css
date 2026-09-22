@@ -1,0 +1,1771 @@
+/* ==========================================================================
+   LSVZ — Page-specific layout
+   ========================================================================== */
+
+/* Hero ---------------------------------------------------------------------- */
+
+/* Opening sequence: the page loads with a plain bone veil over the cover
+   photo (and the header hidden), so the only thing on screen is the brand
+   lockup — the flower spins in, then the name, then the tagline. Once it
+   has played, main.js lifts the veil and reveals the header, and the same
+   lockup stays put over the photo as the hero mark. Stacking inside
+   .home-hero: photo → scrim → veil (3) → lockup (4), so the mark sits
+   above the veil while the photo below stays hidden. */
+
+.hero__brand-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6%;
+  pointer-events: none;
+}
+
+/* The flower leads alone and centred, then slides left as the wordmark's
+   grid track opens from 0fr to 1fr — the row grows rightward from a centred
+   start, so the icon drifts left on its own without being animated there. */
+.hero__brand-row {
+  display: grid;
+  grid-template-columns: auto 0fr;
+  column-gap: 0;
+  align-items: center;
+  animation: brand-expand 0.85s var(--ease-out-expo) 0.95s forwards;
+}
+
+/* Clipping window only — its width is the grid track, so the wordmark is
+   wiped in from the icon's edge rather than fading in place. The inner box
+   keeps its own natural width so the name and tagline stay centred to each
+   other while the window is still opening. */
+.hero__brand-text {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.hero__brand-text-inner {
+  display: flex;
+  flex-direction: column;
+  /* Left-aligned, not centred. Centring looks fine while the logotype is the
+     widest thing here, but on a phone the tagline outgrows it and the mark
+     gets pushed to the middle of its column — leaving a gap between it and
+     the flower that no column-gap can close. */
+  align-items: flex-start;
+  width: max-content;
+  white-space: nowrap;
+}
+
+/* The mark is plain brand terracotta — an earlier pass tried a chrome
+   "liquid metal" sweep here and it read as foreign to the rest of the site,
+   so the sheen is gone and only the choreography it came with was kept. */
+
+.hero__brand-icon {
+  display: block;
+  /* The laid-out size is the FINAL, settled one; the opening is oversized
+     purely by transform, which costs no layout. If the icon were genuinely
+     large to begin with, its grid column would stay that wide and leave a
+     hole between it and the wordmark once it shrank. */
+  width: clamp(62px, 10.5vw, 104px);
+  aspect-ratio: 1;
+  /* Flat accent colour taking the petal shape (mask lives on :root). */
+  background: var(--accent-deep);
+  -webkit-mask-image: var(--brand-mask);
+  mask-image: var(--brand-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  filter: drop-shadow(0 8px 22px rgba(60, 20, 10, 0.3));
+  opacity: 0;
+  animation: brand-icon-in 1.8s var(--ease-out-expo) forwards;
+}
+
+/* The real logotype, inlined as SVG rather than set in the display face, so
+   the page's CSS can reach the path: it carries no fill of its own and takes
+   currentColor, which means the mark follows each language's accent for free.
+   The paint-on animation itself lives on .brand-logo__paint in
+   components.css; only the timing differs between the two intros.
+
+   The viewBox is cropped to the ink, so this width is the mark's real width —
+   the source file padded it with 164 empty units on the left, which was
+   holding it away from the flower. */
+.hero__brand-name {
+  display: block;
+  width: clamp(180px, 28vw, 360px);
+  height: auto;
+  color: var(--accent-deep);
+  filter: drop-shadow(0 2px 20px rgba(253, 251, 247, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.hero__brand-name .brand-logo__paint {
+  /* Not --ease-out-expo: that curve puts ~84% of the run in its first
+     quarter, which reads as a flash rather than a stroke being laid down. */
+  animation: logo-paint-on 1.1s cubic-bezier(0.4, 0, 0.25, 1) 1.05s forwards;
+}
+
+.hero__brand-tagline {
+  margin-top: var(--space-3);
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-deep);
+  opacity: 0;
+  /* Two independent tracks: the entrance (opacity/transform) and, timed with
+     the veil lifting, the switch to bone — the deep red reads well on the
+     bone curtain but would vanish against the photo underneath. */
+  animation: brand-text-in 0.6s ease 1.6s forwards, tagline-on-photo 0.9s ease 2.6s forwards;
+}
+
+@keyframes tagline-on-photo {
+  to {
+    color: var(--bone-100);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+  }
+}
+
+.intro-done .hero__brand-tagline {
+  animation: none;
+  color: var(--bone-100);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* Phone only. The tagline sits in a nowrap, max-content column so it cannot
+   reflow while the row animates open — which also means it cannot shrink to
+   fit. At 375px it ran ~12px past the viewport and got clipped. Scaling the
+   type (and easing the tracking) keeps it on one line down to ~320px without
+   touching the desktop size. */
+@media (max-width: 560px) {
+  .hero__brand-tagline {
+    font-size: clamp(0.55rem, 2.9vw, 0.72rem);
+    letter-spacing: 0.09em;
+  }
+}
+
+/* One continuous animation rather than a rotate-in handed off to a
+   shrink: the icon spins up to full size alone and centred (through 50%,
+   = 0.9s), holds a beat, then settles down to its final scale over the
+   same window in which .hero__brand-row opens and pushes it leftward. A
+   two-animation handoff would risk a visible jump at the seam. */
+@keyframes brand-icon-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) rotate(-300deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.85) rotate(0deg);
+  }
+  57% {
+    transform: scale(1.85) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes brand-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Opens the wordmark's grid track, which both wipes the text in and pushes
+   the icon leftward off centre. */
+@keyframes brand-expand {
+  to {
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__brand-icon,
+  .hero__brand-name,
+  .hero__brand-tagline {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero__brand-row {
+    animation: none !important;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-5);
+  }
+}
+
+/* Scroll hint: a discreet arrow below the tagline. The outer element is
+   plain (JS fades it out once scrolling starts, alongside the rest of the
+   brand mark); the inner icon carries its own delayed fade-in and gentle
+   bounce so it reads as "you can scroll" without shouting. */
+.hero__scroll-hint {
+  margin-top: var(--space-6);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* Its job is done once the visitor starts scrolling (class set by main.js). */
+.hero__scroll-hint.is-hidden {
+  opacity: 0;
+}
+
+.hero__scroll-hint-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--bone-050);
+  opacity: 0;
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.4));
+  animation: hint-fade-in 0.6s ease 3.6s forwards, hint-bounce 1.8s ease-in-out 4.2s infinite;
+}
+
+@keyframes hint-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hint-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-hint-icon {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
+/* Cover photo hero ------------------------------------------------------------
+   Full-bleed photo below the (always-visible) header, with a very slow
+   Ken Burns drift for life and a soft scrim for the brand mark's
+   legibility. Purely CSS-driven — no scroll mechanics to go wrong on
+   phones. svh units so mobile address bars don't cause height jumps. */
+
+.home-hero {
+  position: relative;
+  height: calc(100vh - 64px);
+  height: calc(100svh - 64px);
+  overflow: hidden;
+}
+
+.home-hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  color: transparent; /* hides the alt-text label if the photo isn't in place yet */
+  animation: hero-kenburns 26s ease-in-out infinite alternate;
+}
+
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__media {
+    animation: none;
+  }
+}
+
+.home-hero__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(36, 18, 9, 0.55), rgba(36, 18, 9, 0.08) 45%, rgba(36, 18, 9, 0.3));
+}
+
+/* Opening curtain over the photo. It only needs to cover the hero: the strip
+   above it is the (still invisible) header, and the page background behind
+   that is the same bone, so there's no visible seam.
+
+   The whole reveal runs on CSS animations with `forwards`, not on a JS
+   class — if the script never runs, the intro still finishes and the page
+   still ends up usable. main.js only adds .intro-done to cut it short when
+   the visitor scrolls or clicks during the intro. */
+.home-hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--bg);
+  pointer-events: none;
+  animation: veil-lift 0.9s var(--ease-out-expo) 2.6s forwards;
+}
+
+@keyframes veil-lift {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Header waits out the intro, then fades in with the photo. Scoped to the
+   home page's own body class so every other page's header is unaffected. */
+.has-intro .site-header {
+  opacity: 0;
+  visibility: hidden;
+  animation: header-arrive 0.7s ease 2.8s forwards;
+}
+
+@keyframes header-arrive {
+  from {
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
+
+/* Skip: once the visitor scrolls or clicks, jump straight to the end state
+   instead of making them wait out the rest of the timeline. */
+.intro-done .home-hero__veil {
+  animation: none;
+  opacity: 0;
+}
+
+.intro-done .site-header {
+  animation: none;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.intro-done .hero__brand-icon,
+.intro-done .hero__brand-name,
+.intro-done .hero__brand-tagline {
+  opacity: 1;
+  transform: none;
+}
+
+/* The row has to land opened too, or a skipped intro leaves the wordmark
+   clipped to a zero-width track. */
+.intro-done .hero__brand-row {
+  animation: none;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-5);
+}
+
+.intro-done .hero__brand-icon {
+  animation: none;
+}
+
+/* Skipping the intro has to land the mark fully painted, not stuck wherever
+   the paint head had reached. */
+.intro-done .brand-logo__paint {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__veil {
+    animation: none;
+    opacity: 0;
+  }
+
+  .has-intro .site-header {
+    animation: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Rest of the hero content, reached by scrolling past the cover photo. */
+.hero-content {
+  padding-block: var(--space-8);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-8);
+  align-items: end;
+}
+
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero-content h1 {
+  font-size: var(--step-4);
+  max-width: 15ch;
+}
+
+.hero-content h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero__lede {
+  font-size: var(--step-1);
+  max-width: 46ch;
+  color: var(--ink-700);
+}
+
+.hero__cta-row {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+}
+
+.hero__stat-panel {
+  background: var(--accent-deep);
+  color: var(--fg-on-red);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  position: relative;
+}
+
+.hero__stat-list {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero__stat-list dt {
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bone-200);
+}
+
+.hero__stat-list dd {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Mission teaser -------------------------------------------------------- */
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pillar-list {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.pillar {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.pillar__mark {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+}
+
+/* Home: event photo teaser ---------------------------------------------------
+   A single drifting strip of real Past Events photos, same idea as the
+   Past Events DriftWall but one row: it moves left to right on a loop and
+   pauses on hover/focus, revealing that tile's date + name. Pulls proof of
+   the community's actual vibe onto the homepage instead of leaving it three
+   clicks away. See assets/js/home-event-strip.js for the drift logic. */
+
+.event-teaser__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.event-teaser__head h2 {
+  max-width: 26ch;
+}
+
+.event-teaser__see-more {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: var(--step--1);
+  color: var(--accent-deep);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color var(--dur-fast) ease;
+}
+
+.event-teaser__see-more:hover {
+  border-color: currentColor;
+}
+
+@media (max-width: 560px) {
+  .event-teaser__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.event-teaser__viewport {
+  --et-tile-w: 210px;
+  --et-gap: 1rem;
+  overflow: hidden;
+  /* A touch of edge fade so tiles feel like they're drifting through the
+     frame rather than stopping abruptly at its border. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  /* Lets a finger scrub the strip horizontally (home-event-strip.js) without
+     the browser reading the same gesture as a page-swipe; vertical scroll
+     still passes through untouched. No effect on mouse input. */
+  touch-action: pan-y;
+}
+
+.event-teaser__track {
+  display: flex;
+  gap: var(--et-gap);
+  width: max-content;
+}
+
+.event-teaser__item {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--et-tile-w);
+  aspect-ratio: 4 / 5;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+}
+
+.event-teaser__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.35);
+  transition: filter 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+}
+
+.event-teaser__item:hover img,
+.event-teaser__item:focus-visible img {
+  filter: grayscale(0) brightness(0.72);
+  transform: scale(1.04);
+}
+
+.event-teaser__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.event-teaser__item:hover .event-teaser__caption,
+.event-teaser__item:focus-visible .event-teaser__caption {
+  opacity: 1;
+  transform: none;
+}
+
+.event-teaser__date {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: var(--bone-200);
+}
+
+.event-teaser__name {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--bone-050);
+}
+
+@media (max-width: 640px) {
+  .event-teaser__viewport {
+    --et-tile-w: 160px;
+  }
+}
+
+/* Empty state -------------------------------------------------------------- */
+
+.empty-state {
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-block: var(--space-8);
+  text-align: center;
+}
+
+.empty-state__mark {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto var(--space-5);
+  /* Two turns with a beat between them, then a long rest — the cadence of
+     something quietly working rather than a flat continuous spin, which
+     suits an "and we're on it" empty state. */
+  animation: empty-mark-spin 3.2s var(--ease-out-expo) infinite;
+}
+
+@keyframes empty-mark-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  22% {
+    transform: rotate(360deg);
+  }
+  31% {
+    transform: rotate(360deg);
+  }
+  53% {
+    transform: rotate(720deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty-state__mark {
+    animation: none;
+  }
+}
+
+.empty-state h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--step-2);
+}
+
+.empty-state p {
+  margin: 0 auto;
+  max-width: 42ch;
+  color: var(--ink-700);
+}
+
+/* Tile-frame hover shine -------------------------------------------------- */
+
+.tile-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    color-mix(in srgb, var(--bone-050) 55%, transparent) 50%,
+    transparent 60%
+  );
+  background-size: 250% 250%;
+  background-position: 120% 120%;
+  transition: background-position 0.8s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.tile-frame:hover::after {
+  background-position: -20% -20%;
+}
+
+/* Drift wall (Past Events hero) --------------------------------------------
+   A sticky, full-viewport stage that opens on a live wall of past-event
+   covers drifting in looping columns. Hover/focus a tile to pause its
+   column and surface the event's name + date. As the visitor scrolls the
+   stage stays pinned (position: sticky) while a scroll-driven scrim dims
+   the wall and the section's own title/lede fade in on top of it — past
+   that point the wall stops responding to hover and just drifts as a
+   backdrop until the track ends and the real event grid takes over. */
+
+.drift-hero {
+  position: relative;
+}
+
+.drift-hero__track {
+  position: relative;
+  height: 200vh;
+}
+
+.drift-hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--ink-900);
+}
+
+.drift-wall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: var(--dw-perspective, 1100px);
+  perspective-origin: 50% 50%;
+  --dw-tile-w: 150px;
+  --dw-tile-h: 200px;
+  --dw-gap: 16px;
+  --dw-radius: 12px;
+  --dw-lift: 46px;
+  --dw-dim: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 46%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 85% at 50% 46%, #000 45%, transparent 100%);
+}
+
+.drift-wall__plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: row;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.drift-wall__col {
+  position: relative;
+  width: calc(var(--dw-tile-w) + var(--dw-gap));
+  transform-style: preserve-3d;
+}
+
+.drift-wall__track {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.drift-wall__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: calc(var(--dw-tile-h) + var(--dw-gap));
+  flex: 0 0 auto;
+  outline: none;
+  transform-style: preserve-3d;
+}
+
+.drift-wall__inner {
+  position: absolute;
+  inset: calc(var(--dw-gap) / 2);
+  display: block;
+  border-radius: var(--dw-radius);
+  overflow: hidden;
+  background: var(--ink-900);
+  opacity: var(--dw-dim);
+  transform: translateZ(0);
+  pointer-events: none;
+  transition: transform 0.42s var(--ease-out-expo), opacity 0.42s var(--ease-out-expo),
+    box-shadow 0.42s var(--ease-out-expo);
+}
+
+.drift-wall__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.85);
+  transition: filter 0.42s var(--ease-out-expo);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.drift-wall__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--ink-900);
+  opacity: 0.35;
+  pointer-events: none;
+  transition: opacity 0.42s var(--ease-out-expo);
+}
+
+.drift-wall__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-3) var(--space-3) 0.7rem;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink-900) 88%, transparent) 75%);
+  color: var(--bone-050);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.32s var(--ease-out-expo), transform 0.32s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.drift-wall__caption .drift-wall__date {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+}
+
+.drift-wall__caption .drift-wall__name {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step--1);
+  line-height: 1.25;
+}
+
+.drift-wall__tile.is-active .drift-wall__inner,
+.drift-wall__tile:focus-visible .drift-wall__inner {
+  opacity: 1;
+  transform: translateZ(var(--dw-lift));
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.65);
+}
+
+.drift-wall__tile.is-active img,
+.drift-wall__tile:focus-visible img {
+  filter: saturate(1.05);
+}
+
+.drift-wall__tile.is-active .drift-wall__overlay,
+.drift-wall__tile:focus-visible .drift-wall__overlay {
+  opacity: 0;
+}
+
+.drift-wall__tile.is-active .drift-wall__caption,
+.drift-wall__tile:focus-visible .drift-wall__caption {
+  opacity: 1;
+  transform: none;
+}
+
+.drift-wall__tile:focus-visible .drift-wall__inner {
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.65), 0 0 0 2px var(--bone-050);
+}
+
+.drift-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ink-900) 35%, transparent) 0%,
+    color-mix(in srgb, var(--ink-900) 80%, transparent) 100%
+  );
+  backdrop-filter: blur(0px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.drift-hero__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(22px);
+  pointer-events: none;
+}
+
+.drift-hero__content .tag {
+  background: color-mix(in srgb, var(--bone-050) 18%, transparent);
+  color: var(--bone-050);
+}
+
+.drift-hero__content h1 {
+  margin-top: var(--space-4);
+  max-width: 15ch;
+  font-size: var(--step-4);
+  color: var(--bone-050);
+}
+
+.drift-hero__content p {
+  max-width: 46ch;
+  font-size: var(--step-1);
+  color: color-mix(in srgb, var(--bone-050) 85%, transparent);
+}
+
+.drift-hero__hint {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-6);
+  z-index: 2;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.drift-hero__hint svg {
+  width: 22px;
+  height: 22px;
+  color: var(--bone-050);
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.4));
+  animation: hint-bounce 1.8s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .drift-wall {
+    --dw-tile-w: 110px;
+    --dw-tile-h: 146px;
+    --dw-gap: 12px;
+  }
+  .drift-hero__content h1 {
+    font-size: var(--step-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-hero__track {
+    height: auto;
+  }
+  .drift-hero__stage {
+    position: relative;
+    height: 70vh;
+  }
+  .drift-hero__scrim,
+  .drift-hero__content {
+    opacity: 1;
+    transform: none;
+  }
+  .drift-hero__hint {
+    display: none;
+  }
+}
+
+/* Gallery (past events) --------------------------------------------------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+/* Every event card is vertical, on purpose — cropping to one consistent
+   portrait ratio (and always picking a portrait source photo for the
+   cover) is what makes a row of different events read as one tidy grid
+   instead of a jumble of sizes. */
+.gallery-grid .tile-frame__media {
+  --pp-ratio: 3 / 4;
+}
+
+@media (max-width: 860px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gallery-item__cap {
+  padding-top: var(--space-3);
+}
+
+.gallery-item__cap .tag {
+  margin-bottom: var(--space-2);
+}
+
+.gallery-item__cap .compact-heading {
+  margin-bottom: var(--space-3);
+}
+
+.gallery-item__cap .compact-heading a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.gallery-item__cap .compact-heading a:hover {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent-deep) 50%, transparent);
+}
+
+/* Event gallery page — masonry wall ---------------------------------------
+   Real photos vary in orientation naturally; CSS columns let each one keep
+   its own aspect ratio and stack into an organic, non-repeating wall with
+   no per-image sizing needed. The placeholder tiles below cycle through a
+   few different ratios so the wall already reads as varied before real
+   photos land. */
+.masonry {
+  column-count: 3;
+  column-gap: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .masonry {
+    column-count: 1;
+  }
+}
+
+.masonry > * {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.masonry img {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.masonry a:hover img {
+  transform: scale(1.03);
+}
+
+/* Wall of 15-20 photos needs to feel quick to arrive, not choreographed —
+   a shorter, barely-staggered fade instead of the standard .reveal-item
+   timing (see main.js, which caps this group's delay lower than others). */
+.masonry.reveal-group .reveal-item {
+  transition-duration: 0.35s;
+}
+
+/* .page-hero sets a large padding-bottom for marketing-copy heroes; this
+   is a compact utility header (back link + name + date) immediately
+   followed by the photo wall, so it needs to sit closer to what's below.
+   Compound selector so it reliably wins over .page-hero regardless of
+   source order. */
+.page-hero.event-gallery-hero {
+  padding-bottom: var(--space-4);
+}
+
+.event-gallery-section {
+  padding-top: var(--space-6);
+}
+
+.event-gallery-hero__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  text-decoration: none;
+}
+
+.event-gallery-hero__back::before {
+  content: "←";
+}
+
+.event-gallery-hero__date {
+  margin: 0;
+  color: var(--ink-700);
+  font-weight: 600;
+}
+
+.event-gallery-cta {
+  text-align: center;
+  /* Masonry columns end at different heights, so the button needs its own
+     guaranteed top gap — it can't rely on the grid's own bottom margin,
+     which only clears the shortest column. */
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-9);
+}
+
+/* Staff -------------------------------------------------------------------- */
+
+/* President + VP get their own centered row, set apart from the rest of
+   the team by .staff-divider below. */
+.staff-leaders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-7);
+}
+
+.staff-card--lead {
+  width: clamp(200px, 32vw, 320px);
+}
+
+
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-7) var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .staff-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 480px) {
+  .staff-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+}
+
+.staff-card__photo {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.staff-card:focus-visible {
+  outline: 3px solid var(--accent-deep);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.staff-card__photo .placeholder-photo {
+  --pp-ratio: 3 / 4;
+  border-radius: 0;
+}
+
+.staff-card__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: contrast(1.02);
+  transition: filter 0.45s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+}
+
+.staff-card:hover .staff-card__photo img,
+.staff-card:focus-within .staff-card__photo img {
+  filter: contrast(1.02) brightness(0.7);
+  transform: scale(1.04);
+}
+
+/* Bottom scrim so the name/role stay legible over any photo; deepens on
+   hover to cover the extra info that slides in above it. */
+.staff-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink-900) 90%, transparent) 0%,
+    color-mix(in srgb, var(--ink-900) 58%, transparent) 30%,
+    transparent 60%
+  );
+  transition: background 0.4s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.staff-card:hover .staff-card__scrim,
+.staff-card:focus-within .staff-card__scrim {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink-900) 94%, transparent) 0%,
+    color-mix(in srgb, var(--ink-900) 80%, transparent) 58%,
+    color-mix(in srgb, var(--ink-900) 15%, transparent) 100%
+  );
+}
+
+.staff-card__info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-4);
+}
+
+.staff-card .compact-heading {
+  margin: 2px 0 0;
+  font-size: var(--step-0);
+  color: var(--bone-050);
+}
+
+.staff-card .role {
+  color: var(--bone-050);
+  opacity: 0.85;
+  font-weight: 700;
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.staff-card__study {
+  margin: 6px 0 0;
+  color: var(--bone-050);
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1.25;
+  opacity: 0.9;
+}
+
+/* The social row grows into the bottom of the card on hover. Because the
+   info block is anchored to the lower edge, opening this row moves the
+   existing role, name and study upward as one unit. */
+.staff-card__networks {
+  display: flex;
+  gap: var(--space-2);
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    max-height 0.4s var(--ease-out-expo),
+    margin-top 0.4s var(--ease-out-expo),
+    opacity 0.25s ease,
+    transform 0.4s var(--ease-out-expo);
+}
+
+.staff-card:hover .staff-card__networks,
+.staff-card:focus-within .staff-card__networks {
+  max-height: 32px;
+  margin-top: var(--space-3);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.staff-card__network {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 1.5px solid color-mix(in srgb, var(--bone-050) 65%, transparent);
+  border-radius: 999px;
+  color: var(--bone-050);
+  background: color-mix(in srgb, var(--ink-900) 18%, transparent);
+  text-decoration: none;
+  transition:
+    color var(--dur-fast) ease,
+    background var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.staff-card__network svg {
+  width: 16px;
+  height: 16px;
+}
+
+a.staff-card__network:hover,
+a.staff-card__network:focus-visible {
+  border-color: var(--bone-050);
+  color: var(--accent-deep);
+  background: var(--bone-050);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .staff-card__networks {
+    transition: none;
+  }
+}
+
+/* Collapsed by default via the 0fr row track; the hover/focus state opens
+   it to 1fr so the height (and the name/role above it) animate smoothly
+   without a fixed max-height guess. */
+.staff-card__extra {
+  display: none;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.4s var(--ease-out-expo), opacity 0.3s ease;
+}
+
+.staff-card:hover .staff-card__extra,
+.staff-card:focus-within .staff-card__extra {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* Touch has no sustained hover to reveal this on, which would otherwise
+   make the location + social links unreachable — so it just stays open
+   there. Desktop's hover/focus reveal above is untouched. */
+@media (hover: none) {
+  .staff-card__extra {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+.staff-card__extra-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding-top: var(--space-3);
+}
+
+.staff-card__location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--step--1);
+  color: var(--bone-050);
+  opacity: 0.9;
+}
+
+.staff-card__location svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.staff-card__social {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.staff-card__social a {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid color-mix(in srgb, var(--bone-050) 45%, transparent);
+  border-radius: 999px;
+  color: var(--bone-050);
+  transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease, background var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.staff-card__social a:hover {
+  border-color: var(--bone-050);
+  background: var(--bone-050);
+  color: var(--accent-deep);
+  transform: translateY(-2px);
+}
+
+.staff-card__social svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* History timeline — vertical, scroll-drawn, expandable ---------------------- */
+
+.timeline-v {
+  position: relative;
+}
+
+.timeline-v__track {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  /* Reaches past .timeline-v's own box, all the way through this section's
+     bottom padding, so it lands flush against the quote section's connector
+     below — no dead gap where the line would appear to stop short of the
+     red band. */
+  bottom: calc(-1 * var(--space-9));
+  width: 2px;
+  background: var(--red-100);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timeline-v__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: var(--accent-deep);
+}
+
+.timeline-v__list {
+  list-style: none;
+  margin: 0;
+  padding-left: var(--space-7);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.timeline-v__item {
+  position: relative;
+}
+
+.timeline-v__node {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  width: 100%;
+  cursor: pointer;
+  padding-block: var(--space-3);
+}
+
+.timeline-v__dot {
+  position: absolute;
+  left: calc(-1 * var(--space-7));
+  top: 17px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg);
+  transition: background var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.timeline-v__node[aria-expanded="true"] .timeline-v__dot {
+  background: var(--accent-deep);
+  transform: scale(1.3);
+}
+
+.timeline-v__year {
+  font-family: var(--font-display);
+  color: var(--accent-deep);
+  font-size: var(--step-1);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.timeline-v__teaser {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+.timeline-v__chevron {
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  color: var(--accent-deep);
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.timeline-v__node[aria-expanded="true"] .timeline-v__chevron {
+  transform: rotate(180deg);
+}
+
+.timeline-v__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease-out-expo);
+}
+
+.timeline-v__node[aria-expanded="true"] + .timeline-v__panel {
+  grid-template-rows: 1fr;
+}
+
+/* .timeline-v__panel-inner is the element .timeline-v__panel's 0fr/1fr grid
+   row actually sizes and clips — it has to stay a plain block box. Nesting
+   a second `display: grid` directly on it breaks the collapse: even though
+   it correctly measures 0px, the browser fails to visually clip that inner
+   grid's overflowing children (a min-height:0 tweak doesn't help — verified
+   in isolation). The two-column layout lives one level down instead, on
+   .timeline-v__panel-grid, which only exists to be laid out, never to be
+   the thing collapsing. */
+.timeline-v__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.timeline-v__panel-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-5);
+  align-items: center;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-4);
+}
+
+.timeline-v__panel-text {
+  min-height: 0;
+}
+
+.timeline-v__panel .timeline-v__media {
+  --pp-ratio: 4 / 3;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+}
+
+/* Real photos replacing a .placeholder-photo keep the same box (ratio,
+   crop, rounding) that the placeholder had — .placeholder-photo itself
+   only ever applied to a div standing in for the not-yet-supplied image. */
+img.timeline-v__media,
+img.history-epilogue__media {
+  aspect-ratio: var(--pp-ratio, 4 / 3);
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.timeline-v__panel .history-heading {
+  margin-bottom: var(--space-2);
+}
+
+.timeline-v__panel p {
+  font-size: var(--step--1);
+  color: var(--ink-700);
+}
+
+@media (max-width: 640px) {
+  .timeline-v__panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-v__panel {
+    transition: none;
+  }
+}
+
+/* Timeline continuum — the scroll-drawn line keeps going through the quote
+   section and into the epilogue, so the timeline reads as one continuous
+   thread rather than stopping dead at the last node. Each section below
+   draws its own segment, independently measured against the same 70%-of-
+   viewport line as .timeline-v__track/__progress, so the three segments
+   fill in sequence and look like a single line as the visitor scrolls.
+   The quote section's segment swaps to bone: red-on-red would vanish. ---- */
+
+.timeline-v__connector {
+  position: absolute;
+  top: 0;
+  left: max(29px, calc((100% - 1180px) / 2 + 29px));
+  width: 2px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timeline-v__connector--bone {
+  bottom: 0;
+  background: color-mix(in srgb, var(--bone-050) 30%, transparent);
+}
+
+.timeline-v__connector--red {
+  background: var(--red-100);
+}
+
+.timeline-v__connector-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+}
+
+.timeline-v__connector--bone .timeline-v__connector-fill {
+  background: var(--bone-050);
+}
+
+.timeline-v__connector--red .timeline-v__connector-fill {
+  background: var(--accent-deep);
+}
+
+/* The dot the continuum line ends on, sized and colored to match
+   .timeline-v__dot above. Drawn on the epilogue's own heading rather than
+   placed by script: the heading is what the line is aimed at, so hanging
+   the dot off it keeps the two locked together through the block's reveal
+   (which briefly transforms the epilogue, and with it the coordinate space
+   any absolutely-positioned dot would have resolved against — the cause of
+   a visible snap once the animation ended). Offset back out of the text's
+   own gutter to land on the line. */
+.history-epilogue__content .history-heading {
+  position: relative;
+}
+
+.history-epilogue__content .history-heading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--space-7) + 6px);
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--accent-deep);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+/* History quote — a deliberate stop, not a whisper ---------------------------- */
+
+.history-quote-section {
+  position: relative;
+  padding-block: var(--space-6);
+}
+
+.history-quote {
+  max-width: 62ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.history-quote__mark {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 0.5;
+  color: var(--red-800);
+  margin-bottom: var(--space-2);
+}
+
+.history-quote p {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--bone-050);
+  margin: 0;
+  max-width: none;
+}
+
+/* History epilogue ------------------------------------------------------------- */
+
+.history-epilogue-section {
+  position: relative;
+}
+
+.history-epilogue {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+@media (max-width: 720px) {
+  .history-epilogue {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Same left gutter .timeline-v__list reserves for the line and its dots, so
+   the epilogue's text clears the continuum exactly as the items above it do
+   — without it the heading runs underneath the line's end dot. */
+.history-epilogue__content {
+  padding-left: var(--space-7);
+}
+
+.history-epilogue__media {
+  --pp-ratio: 4 / 3;
+}
+
+/* Join / membership CTA ------------------------------------------------------
+   A single centered column instead of a two-column layout: one clear
+   invitation, not a benefits list next to a separate form card. */
+
+.join-section .wrap {
+  max-width: 720px;
+}
+
+.join-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+}
+
+.join-benefits li {
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--accent-deep);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-0);
+  line-height: 1.35;
+  color: var(--ink-900);
+}
+
+@media (max-width: 720px) {
+  .join-benefits {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+.join-open-note {
+  margin-top: var(--space-5);
+  font-size: var(--step--1);
+  color: var(--ink-700);
+}
+
+.join-cta {
+  text-align: center;
+}
+
+.join-cta h2 {
+  max-width: 18ch;
+  margin-inline: auto;
+}
+
+.join-cta p {
+  max-width: 42ch;
+  margin: var(--space-4) auto 0;
+  color: var(--ink-700);
+}
+
+.join-cta__btn {
+  margin-top: var(--space-6);
+}
+
+.join-cta__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Page hero (non-home pages) ------------------------------------------------ */
+
+.page-hero {
+  padding-block: var(--space-8) var(--space-7);
+}
+
+.page-hero__eyebrow-free {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.page-hero p {
+  font-size: var(--step-1);
+  max-width: 55ch;
+  color: var(--ink-700);
+}
+.event-teaser__viewport.is-static { overflow-x: auto; touch-action: pan-x pan-y pinch-zoom; scroll-snap-type: x proximity; mask-image: none; -webkit-mask-image: none; padding: 4px 24px 16px; }
+.event-teaser__viewport.is-static [data-clone] { display: none; }
+.event-teaser__viewport.is-static .event-teaser__item { scroll-snap-align: start; }
+.event-teaser__viewport.is-static .event-teaser__caption { opacity: 1; transform: none; background: linear-gradient(transparent, rgb(0 0 0 / 85%)); padding-top: 36px; }
+.motion-control { margin: 0 24px 16px; }
+.motion-control[hidden] { display: none; }
+.empty-state .hero__cta-row { justify-content: center; margin-top: 24px; }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-quote .word { opacity: 1; }
+}
+#event-gallery { scroll-margin-top: 100px; }
+@media (hover: none) and (pointer: coarse) {
+  .hero__brand-row { animation-delay: .3s; animation-duration: .55s; }
+  .hero__brand-icon { animation-duration: 1s; }
+  .brand-logo__paint { animation-delay: .4s; animation-duration: .75s; }
+  .hero__brand-tagline { animation-delay: .85s, 1.15s; }
+  .home-hero__veil { animation-delay: 1.15s; animation-duration: .65s; }
+}

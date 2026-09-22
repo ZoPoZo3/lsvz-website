@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <script src="assets/js/boot.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#F6EFE4" />
+  <title>Become a Member — LSVZ</title>
+  <meta name="description" content="Join LSVZ, the Latino & Hispanic Student Association of Zurich." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%238C2A1E'%3E%3Ccircle cx='29' cy='20' r='9'/%3E%3Ccircle cx='24.5' cy='27.79' r='9'/%3E%3Ccircle cx='15.5' cy='27.79' r='9'/%3E%3Ccircle cx='11' cy='20' r='9'/%3E%3Ccircle cx='15.5' cy='12.21' r='9'/%3E%3Ccircle cx='24.5' cy='12.21' r='9'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3.5' fill='%23F6EFE4'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <style>
+    /* This page's signature azulejo motif: wreath */
+    :root {
+      --tile-red: url("../img/patterns/azulejo-wreath-red.svg");
+      --tile-bone: url("../img/patterns/azulejo-wreath-bone.svg");
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Saltar al contenido</a>
+  <!-- Page-entry intro: replays the home hero's flower + wordmark, briefly,
+       on arriving at this page. Purely decorative and pointer-events:none —
+       see .page-intro in assets/css/components.css. -->
+  <div class="page-intro" aria-hidden="true">
+    <div class="page-intro__row">
+      <span class="page-intro__icon"></span>
+      <span class="page-intro__name-wrap"><svg class="page-intro__name" viewBox="164 63 554 182" role="img" aria-label="LSVZ"><defs><clipPath id="lsvzIntroClip"><path d="M306.5 64c-59.2.6-56.7.3-60 6.6-1.8 3.5-2.2 29.2-.4 34.1.5 1.7 3.4 5 6.2 7.4 2.9 2.4 10.2 9.1 16.2 14.9 6.1 5.8 14.2 13.5 18 17.1 37.9 35.2 60.5 56.8 60.5 58 0 1.1-129.4-.2-130.5-1.3-.6-.6-1-23.6-1-65.3V71.2l-2.3-2.5c-4.2-4.4-6.7-4.9-26-4.5-17.3.3-18.3.4-20.4 2.6l-2.3 2.3-.3 83.2c-.2 61.1.1 83.9.9 86 .7 1.5 2.3 3.7 3.7 4.7 2.4 2 4.7 2 123.8 2 85.9 0 122-.3 123.7-1.1 4.4-2 5.7-6.7 5.7-20.7-.1-20.1 0-19.9-12.7-32.2-5.9-5.8-13.1-12.6-16-15-2.8-2.5-11.4-10.4-19-17.5-7.6-7.2-18.8-17.5-24.8-23-18.5-16.8-27-25.3-26.1-26.2.4-.4 15.7-.8 33.9-.8h33.2l3.5 7c3.3 6.5 8.1 16.9 13.5 29 1.3 2.7 5 10.8 8.3 18 3.2 7.1 11.7 25.6 18.7 41 15.5 34.2 16.7 36.4 20.9 39.3 3.3 2.3 3.9 2.3 23.5 2l20.1-.3 2.9-3c1.7-1.8 7-12.1 13.1-25.5 5.6-12.4 12.8-28.1 16-35s7.1-15.4 8.8-19c19.4-42.6 23.7-51.7 25-52.8 1.2-.9 9.7-1.2 34.6-1.2 32.1 0 38 .4 37.4 2.1-.3.8-23.8 22.6-38.3 35.4-4.3 3.8-14.9 13.3-23.5 21-19 17-26 23-32.9 28.5-7 5.6-9.1 10.1-9.1 20.5 0 8.9 1.5 20.7 3 24.5 2.4 5.8-1.9 5.5 90 5.2 88.8-.4 85.9-.3 90.4-4.7 2.3-2.3 2.4-27.1.1-31.9-3.2-6.7-2-6.6-55.9-6.6-39.5 0-48.6-.2-48.6-1.3 0-1.2 10.4-10.9 35.5-33.2 4.4-3.9 12.7-11.3 18.6-16.5 5.8-5.2 13.5-12 16.9-15 3.5-3 8.6-7.6 11.4-10.1 2.8-2.6 8.1-7.2 11.8-10.3 11-9.2 11.2-9.8 11.7-25.9.3-11 0-14.7-1.3-18.1-3.1-8.1 3-7.6-97-7.6h-88.3l-4.1 2.9c-3.3 2.5-4.5 4.4-7.2 11.3-1.7 4.6-4 10.1-4.9 12.3-1 2.2-4.2 9.8-7.1 17-2.9 7.1-9 22.4-13.7 34-4.7 11.5-9.7 23.9-11.2 27.5-3.7 9.3-4.8 10.9-6.1 9-1-1.5-12.4-29.5-20.5-50.5-6.8-17.7-17.2-42.7-21.3-51.7-6-13-3.6-12.3-42.2-12.3-17.9-.1-56.8.2-86.5.5" /></clipPath></defs><g clip-path="url(#lsvzIntroClip)"><path class="brand-logo__paint" d="M 190 58 L 190 224 L 407 224 L 261 86 L 410 86 L 478 244 L 546 86 L 702 86 L 548 224 L 722 224" /></g></svg></span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap site-header__bar">
+      <a class="brand" href="index.html">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
+          <g fill="var(--accent-deep)">
+            <circle cx="29" cy="20" r="9" />
+            <circle cx="24.5" cy="27.79" r="9" />
+            <circle cx="15.5" cy="27.79" r="9" />
+            <circle cx="11" cy="20" r="9" />
+            <circle cx="15.5" cy="12.21" r="9" />
+            <circle cx="24.5" cy="12.21" r="9" />
+          </g>
+          <circle cx="20" cy="20" r="3.5" fill="var(--bone-100)" />
+        </svg>
+        <svg class="brand__name" viewBox="164 63 554 182" role="img" aria-label="LSVZ"><path d="M306.5 64c-59.2.6-56.7.3-60 6.6-1.8 3.5-2.2 29.2-.4 34.1.5 1.7 3.4 5 6.2 7.4 2.9 2.4 10.2 9.1 16.2 14.9 6.1 5.8 14.2 13.5 18 17.1 37.9 35.2 60.5 56.8 60.5 58 0 1.1-129.4-.2-130.5-1.3-.6-.6-1-23.6-1-65.3V71.2l-2.3-2.5c-4.2-4.4-6.7-4.9-26-4.5-17.3.3-18.3.4-20.4 2.6l-2.3 2.3-.3 83.2c-.2 61.1.1 83.9.9 86 .7 1.5 2.3 3.7 3.7 4.7 2.4 2 4.7 2 123.8 2 85.9 0 122-.3 123.7-1.1 4.4-2 5.7-6.7 5.7-20.7-.1-20.1 0-19.9-12.7-32.2-5.9-5.8-13.1-12.6-16-15-2.8-2.5-11.4-10.4-19-17.5-7.6-7.2-18.8-17.5-24.8-23-18.5-16.8-27-25.3-26.1-26.2.4-.4 15.7-.8 33.9-.8h33.2l3.5 7c3.3 6.5 8.1 16.9 13.5 29 1.3 2.7 5 10.8 8.3 18 3.2 7.1 11.7 25.6 18.7 41 15.5 34.2 16.7 36.4 20.9 39.3 3.3 2.3 3.9 2.3 23.5 2l20.1-.3 2.9-3c1.7-1.8 7-12.1 13.1-25.5 5.6-12.4 12.8-28.1 16-35s7.1-15.4 8.8-19c19.4-42.6 23.7-51.7 25-52.8 1.2-.9 9.7-1.2 34.6-1.2 32.1 0 38 .4 37.4 2.1-.3.8-23.8 22.6-38.3 35.4-4.3 3.8-14.9 13.3-23.5 21-19 17-26 23-32.9 28.5-7 5.6-9.1 10.1-9.1 20.5 0 8.9 1.5 20.7 3 24.5 2.4 5.8-1.9 5.5 90 5.2 88.8-.4 85.9-.3 90.4-4.7 2.3-2.3 2.4-27.1.1-31.9-3.2-6.7-2-6.6-55.9-6.6-39.5 0-48.6-.2-48.6-1.3 0-1.2 10.4-10.9 35.5-33.2 4.4-3.9 12.7-11.3 18.6-16.5 5.8-5.2 13.5-12 16.9-15 3.5-3 8.6-7.6 11.4-10.1 2.8-2.6 8.1-7.2 11.8-10.3 11-9.2 11.2-9.8 11.7-25.9.3-11 0-14.7-1.3-18.1-3.1-8.1 3-7.6-97-7.6h-88.3l-4.1 2.9c-3.3 2.5-4.5 4.4-7.2 11.3-1.7 4.6-4 10.1-4.9 12.3-1 2.2-4.2 9.8-7.1 17-2.9 7.1-9 22.4-13.7 34-4.7 11.5-9.7 23.9-11.2 27.5-3.7 9.3-4.8 10.9-6.1 9-1-1.5-12.4-29.5-20.5-50.5-6.8-17.7-17.2-42.7-21.3-51.7-6-13-3.6-12.3-42.2-12.3-17.9-.1-56.8.2-86.5.5" fill="currentColor" /></svg>
+      </a>
+      <nav class="nav" id="primary-nav" aria-label="Navegación principal" data-i18n-aria="a11y.nav">
+        <ul class="nav__links">
+          <li><a href="index.html" data-i18n="nav.home">Inicio</a></li>
+          <li><a href="history.html" data-i18n="nav.history">Historia</a></li>
+          <li><a href="events-upcoming.html" data-i18n="nav.upcoming">Próximos eventos</a></li>
+          <li><a href="events-past.html" data-i18n="nav.past">Eventos pasados</a></li>
+          <li><a href="staff.html" data-i18n="nav.staff">Equipo</a></li>
+          <li><a href="join.html" data-i18n="nav.join" aria-current="page">Hazte miembro</a></li>
+        </ul>
+        <div class="lang-switch" role="group" aria-label="Elegir idioma" data-i18n-aria="a11y.language" data-active="es">
+          <button type="button" class="lang-switch__trigger" aria-controls="language-menu" aria-expanded="false">
+            <span class="lang-toggle__dot"></span>
+            <span class="lang-switch__current-label">ES</span>
+            <svg class="lang-switch__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+          <div class="lang-switch__menu" id="language-menu">
+            <button type="button" class="lang-switch__option" data-lang="en"><span class="lang-toggle__dot"></span>EN</button>
+            <button type="button" class="lang-switch__option" data-lang="es"><span class="lang-toggle__dot"></span>ES</button>
+            <button type="button" class="lang-switch__option" data-lang="de"><span class="lang-toggle__dot"></span>DE</button>
+          </div>
+        </div>
+      </nav>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir o cerrar menú" data-i18n-aria="a11y.menu"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero wrap">
+      <div class="page-hero__eyebrow-free reveal">
+        <span class="tag" data-i18n="join.kicker">Únete</span>
+      </div>
+      <h1 class="reveal" data-i18n="join.title" data-split-words>Hazte miembro</h1>
+      <p class="reveal" data-i18n="join.lede">Hacerte miembro es rápido y te da acceso prioritario a los eventos, al chat de la comunidad y a la lista de correo.</p>
+    </section>
+
+    <div class="tile-divider tile-divider--bone" aria-hidden="true"></div>
+
+    <section class="section join-section">
+      <div class="wrap">
+        <span class="tag" data-i18n="join.benefitsTitle">Por qué unirte</span>
+        <ul class="join-benefits reveal-group">
+          <li class="reveal-item" data-i18n="join.benefit1">Acceso prioritario a eventos que muchas veces se llenan rápido</li>
+          <li class="reveal-item" data-i18n="join.benefit2">Una comunidad en la que te sentirás como en casa</li>
+          <li class="reveal-item" data-i18n="join.benefit3">Voz en las decisiones sobre los próximos eventos</li>
+        </ul>
+
+        <p class="join-open-note reveal" data-i18n="join.openToAll">No hace falta ser latino o hispanohablante: si te sientes identificado con la comunidad, tienes tu sitio aquí.</p>
+
+        <div class="accent-rule" aria-hidden="true"></div>
+
+        <div class="join-cta reveal">
+          <h2 data-i18n="join.formCta" data-split-words>Rellena el formulario de inscripción</h2>
+          <p data-i18n="join.formHint">Es el mismo formulario conectado a nuestro registro de socios. Tarda menos de un minuto y se abre en una pestaña nueva.</p>
+          <a class="btn btn--primary join-cta__btn" href="https://docs.google.com/forms/d/e/1FAIpQLSev6Rvvwi_4zz2l1FIKuwGQDZe7cXP4SFABVeF32R4C4AqfUA/viewform" target="_blank" rel="noopener">
+            <span data-i18n="cta.openForm">Abrir el formulario</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="tile-divider tile-divider--bone" aria-hidden="true"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <div class="footer-brand">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <g fill="var(--red-500)">
+              <circle cx="29" cy="20" r="9" />
+              <circle cx="24.5" cy="27.79" r="9" />
+              <circle cx="15.5" cy="27.79" r="9" />
+              <circle cx="11" cy="20" r="9" />
+              <circle cx="15.5" cy="12.21" r="9" />
+              <circle cx="24.5" cy="12.21" r="9" />
+            </g>
+            <circle cx="20" cy="20" r="3.5" fill="var(--ink-900)" />
+          </svg>
+          <span data-i18n="footer.about.title">LSVZ</span>
+        </div>
+        <p data-i18n="footer.about.body">Asociación de Estudiantes Latinos e Hispanohablantes de Zürich.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.2" cy="6.8" r="1" /></svg>
+          </a>
+          <a href="mailto:hello@lsvz.ch" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4 6.5 8 6.5 8-6.5" /></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h2 class="compact-heading" data-i18n="footer.nav.title">Explorar</h2>
+        <ul class="footer-links">
+          <li><a href="history.html" data-i18n="nav.history">Historia</a></li>
+          <li><a href="events-upcoming.html" data-i18n="nav.upcoming">Próximos eventos</a></li>
+          <li><a href="events-past.html" data-i18n="nav.past">Eventos pasados</a></li>
+          <li><a href="staff.html" data-i18n="nav.staff">Equipo</a></li>
+          <li><a href="join.html" data-i18n="nav.join">Hazte miembro</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="compact-heading" data-i18n="footer.contact.title">Contacto</h2>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@lsvz.ch" data-i18n="footer.contact.email">hello@lsvz.ch</a></li>
+          <li><a href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener">Instagram: @lsvz.official</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="year"></span> LSVZ. <span data-i18n="footer.rights">Todos los derechos reservados.</span></span>
+      <span data-i18n="footer.credit">Hecho con cariño en Zúrich.</span>
+    </div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
