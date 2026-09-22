@@ -82,29 +82,72 @@
         <span class="tag" data-i18n="eventsUpcoming.kicker">Reserva la fecha</span>
       </div>
       <h1 class="reveal" data-i18n="eventsUpcoming.title" data-split-words>Próximos eventos</h1>
-      <p class="reveal" data-i18n="eventsUpcoming.lede">Desde fiestas de bienvenida hasta noches culturales, esto es lo que viene en cuanto lo confirmemos.</p>
+      <p class="reveal" data-i18n="eventsUpcoming.lede">Aquí publicamos las próximas fechas para encontrarnos, bailar y compartir comunidad en Zúrich.</p>
     </section>
 
     <div class="tile-divider tile-divider--bone" aria-hidden="true"></div>
 
     <section class="section">
       <div class="wrap">
-        <div class="empty-state reveal">
-          <svg class="empty-state__mark" viewBox="0 0 40 40" aria-hidden="true">
-            <g fill="var(--accent-deep)">
-              <circle cx="29" cy="20" r="9" />
-              <circle cx="24.5" cy="27.79" r="9" />
-              <circle cx="15.5" cy="27.79" r="9" />
-              <circle cx="11" cy="20" r="9" />
-              <circle cx="15.5" cy="12.21" r="9" />
-              <circle cx="24.5" cy="12.21" r="9" />
-            </g>
-            <circle cx="20" cy="20" r="3.5" fill="var(--bg)" />
-          </svg>
-          <h2 data-i18n="eventsUpcoming.emptyTitle">Todavía no hay nada en el calendario</h2>
-          <p data-i18n="eventsUpcoming.emptyBody">Estamos preparando el próximo evento. Vuelve pronto o síguenos en Instagram para enterarte.</p>
-          <div class="hero__cta-row"><a class="btn btn--primary" href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" data-i18n="cta.instagram">Síguenos en Instagram</a><a class="btn btn--ghost" href="events-past.html" data-i18n="cta.browsePast">Ver eventos pasados</a></div>
+        <div class="upcoming-events reveal-group">
+          <article class="upcoming-event reveal-item">
+            <picture class="upcoming-event__poster">
+              <source srcset="assets/img/photos/events-upcoming/bqm-tardeo-480.webp 480w, assets/img/photos/events-upcoming/bqm-tardeo-960.webp 943w" sizes="(max-width: 760px) calc(100vw - 48px), 38vw" type="image/webp" />
+              <img src="assets/img/photos/events-upcoming/bqm-tardeo-960.webp" alt="Cartel de BQM Tardeo en Polyterrasse" width="943" height="1676" fetchpriority="high" decoding="async" />
+            </picture>
+            <div class="upcoming-event__content">
+              <h2>BQM Tardeo</h2>
+              <p class="upcoming-event__description" data-i18n="eventsUpcoming.bqm.body">Empieza el semestre con vistas al atardecer desde Polyterrasse, DJ Moontea y una mezcla de latin house, reguetón, salsa y bachata. Ven cuando quieras: la entrada es libre.</p>
+              <dl class="upcoming-event__facts">
+                <div><dt data-i18n="eventsUpcoming.dateLabel">Fecha</dt><dd><time datetime="2026-09-25" data-event-date="2026-09-25">25 de septiembre de 2026</time></dd></div>
+                <div><dt data-i18n="eventsUpcoming.timeLabel">Hora</dt><dd>17:00–22:30</dd></div>
+                <div><dt data-i18n="eventsUpcoming.placeLabel">Lugar</dt><dd>BQM Polyterrasse</dd></div>
+              </dl>
+              <p class="upcoming-event__status" data-i18n="eventsUpcoming.freeEntry">Entrada libre · No necesitas ticket</p>
+            </div>
+          </article>
+
+          <article class="upcoming-event upcoming-event--reverse reveal-item">
+            <picture class="upcoming-event__poster">
+              <source srcset="assets/img/photos/events-upcoming/delirio-vol-3-480.webp 480w, assets/img/photos/events-upcoming/delirio-vol-3-960.webp 960w" sizes="(max-width: 760px) calc(100vw - 48px), 38vw" type="image/webp" />
+              <img src="assets/img/photos/events-upcoming/delirio-vol-3-960.webp" alt="Cartel de DELIRIO Vol. 3 en JADE Club" width="960" height="1200" loading="lazy" decoding="async" />
+            </picture>
+            <div class="upcoming-event__content">
+              <h2>DELIRIO [VOL.3]</h2>
+              <p class="upcoming-event__description" data-i18n="eventsUpcoming.delirio.body">DELIRIO vuelve con su tercera edición en JADE Club: una fiesta latina con reguetón, club classics y pop anthems hasta la madrugada.</p>
+              <dl class="upcoming-event__facts">
+                <div><dt data-i18n="eventsUpcoming.dateLabel">Fecha</dt><dd><time datetime="2026-10-09" data-event-date="2026-10-09">9 de octubre de 2026</time></dd></div>
+                <div><dt data-i18n="eventsUpcoming.timeLabel">Hora</dt><dd>23:30–04:30</dd></div>
+                <div><dt data-i18n="eventsUpcoming.placeLabel">Lugar</dt><dd>JADE Club</dd></div>
+              </dl>
+              <div class="upcoming-event__actions">
+                <a class="btn btn--primary" href="https://eventfrog.ch/en/p/parties/latin-brasil/delirio-vol-3-7506109415793128306.html" target="_blank" rel="noopener" data-i18n="cta.tickets">Tickets</a>
+              </div>
+            </div>
+          </article>
         </div>
+
+        <!-- Plantilla conservada para temporadas sin eventos. Sustituye el
+             bloque .upcoming-events por este contenido cuando el calendario
+             vuelva a estar vacío. -->
+        <template id="upcoming-empty-state">
+          <div class="empty-state reveal">
+            <svg class="empty-state__mark" viewBox="0 0 40 40" aria-hidden="true">
+              <g fill="var(--accent-deep)">
+                <circle cx="29" cy="20" r="9" />
+                <circle cx="24.5" cy="27.79" r="9" />
+                <circle cx="15.5" cy="27.79" r="9" />
+                <circle cx="11" cy="20" r="9" />
+                <circle cx="15.5" cy="12.21" r="9" />
+                <circle cx="24.5" cy="12.21" r="9" />
+              </g>
+              <circle cx="20" cy="20" r="3.5" fill="var(--bg)" />
+            </svg>
+            <h2 data-i18n="eventsUpcoming.emptyTitle">Todavía no hay nada en el calendario</h2>
+            <p data-i18n="eventsUpcoming.emptyBody">Estamos preparando el próximo evento. Vuelve pronto o síguenos en Instagram para enterarte.</p>
+            <div class="hero__cta-row"><a class="btn btn--primary" href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" data-i18n="cta.instagram">Síguenos en Instagram</a><a class="btn btn--ghost" href="events-past.html" data-i18n="cta.browsePast">Ver eventos pasados</a></div>
+          </div>
+        </template>
       </div>
     </section>
 

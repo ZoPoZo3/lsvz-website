@@ -29,27 +29,27 @@ Si una validación falla, la versión pública anterior permanece activa. En Git
 4. Guardar y subir los cambios a la rama `main`.
 5. Comprobar en GitHub Actions que la publicación ha terminado correctamente.
 
-## Cambio de dominio sin interrupción
+## Dominio publicado
 
-Los registros actuales de Wix se han inventariado antes de cambiarlos. No hay registros MX de correo empresarial en la zona DNS actual.
+La nueva web está publicada en `https://lsvz.ch` y `https://www.lsvz.ch` redirige al dominio principal. GitHub Pages sirve el sitio y fuerza HTTPS. El dominio continúa registrado en Wix; no hay registros MX de correo empresarial en la zona DNS actual.
 
-Cuando la URL de prueba de GitHub Pages esté aprobada:
+La configuración activa es:
 
-1. añadir `lsvz.ch` como dominio personalizado en GitHub Pages y verificarlo;
-2. sustituir en Wix los tres registros A del dominio raíz por los cuatro registros A de GitHub Pages;
-3. sustituir el CNAME de `www` por el host `*.github.io` del repositorio;
-4. esperar la propagación y verificar `https://lsvz.ch` y `https://www.lsvz.ch`;
-5. activar **Enforce HTTPS** en GitHub Pages;
-6. comprobar navegación, formularios, imágenes y Analytics desde móvil y escritorio.
+1. `lsvz.ch` está configurado como dominio personalizado en GitHub Pages;
+2. el dominio raíz utiliza los cuatro registros A oficiales de GitHub Pages;
+3. `www.lsvz.ch` usa un CNAME hacia `zopozo3.github.io`;
+4. GitHub confirma la comprobación DNS;
+5. **Enforce HTTPS** está activo y el certificado cubre ambos nombres;
+6. la web responde correctamente desde el dominio público.
 
-No se debe cancelar el plan web de Wix hasta que la nueva dirección funcione correctamente. La suscripción del dominio se mantiene activa aunque se cancele el plan del sitio.
+La suscripción del dominio se mantiene activa aunque se haya cancelado la renovación del plan del sitio.
 
 ## Suscripciones encontradas en Wix
 
-- Plan web **Premium Core**: activo, ciclo de dos años, próxima fecha indicada el 14 de septiembre de 2028.
-- Dominio **lsvz.ch**: activo, ciclo anual, próxima renovación indicada para 2027.
+- Plan web **Premium Core**: renovación automática desactivada; Wix confirma que sus funciones permanecen activas hasta el 3 de octubre de 2028.
+- Dominio **lsvz.ch**: activo y separado del plan web, con ciclo anual y próximo cobro indicado el 3 de septiembre de 2027.
 
-Cancelar el plan web evita su siguiente renovación, pero no cancela el dominio. Wix indica que el reembolso de 14 días se aplica a compras iniciales y no normalmente a renovaciones; la pantalla final de cancelación debe revisarse antes de confirmarla.
+Cancelar el plan web evita su siguiente renovación y no cancela el dominio. Wix informó durante la cancelación de que el siguiente ciclo del plan ya estaba cobrado y comienza el 3 de octubre de 2026; la cuenta muestra una opción separada para solicitar un reembolso antes de esa fecha.
 
 ## Analítica
 
@@ -63,7 +63,7 @@ La propiedad de Google Analytics se configura con:
 - objetivos de tráfico e interacción;
 - opciones opcionales de intercambio de datos con Google desactivadas.
 
-El ID de medición se inserta en la web después de crear la propiedad. Google Analytics permite revisar usuarios, sesiones, páginas, procedencia del tráfico, clics salientes y otras interacciones recogidas automáticamente. La política de privacidad y el consentimiento se deben adaptar a la configuración final antes de recopilar datos.
+El ID de medición `G-NPHL6ZSTTR` está integrado. Google Analytics permite revisar usuarios, sesiones, páginas, procedencia del tráfico, clics salientes y otras interacciones recogidas automáticamente. La medición se carga únicamente después del consentimiento explícito y la web incluye su política de privacidad.
 
 ## Referencias oficiales
 

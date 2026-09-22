@@ -454,10 +454,11 @@
   if (counters.length && !reduceMotion && "IntersectionObserver" in window) {
     var runCount = function (el) {
       var raw = el.textContent.trim();
-      var match = raw.match(/^(\d+)(.*)$/);
+      var match = raw.match(/^([^0-9]*)(\d+)(.*)$/);
       if (!match) return;
-      var target = parseInt(match[1], 10);
-      var suffix = match[2];
+      var prefix = match[1];
+      var target = parseInt(match[2], 10);
+      var suffix = match[3];
       var from = target >= 1000 ? target - 24 : 0;
       var duration = 1600;
       var start = null;
@@ -469,7 +470,7 @@
         // on the site: a sharper curve hits ~90% of the target in the first
         // third, so the digits barely appear to climb at all.
         var eased = 1 - Math.pow(1 - t, 3);
-        el.textContent = Math.round(from + (target - from) * eased) + suffix;
+        el.textContent = prefix + Math.round(from + (target - from) * eased) + suffix;
         if (t < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
