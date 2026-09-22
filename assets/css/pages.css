@@ -397,6 +397,58 @@
   }
 }
 
+/* Home notice: a compact event ticket that appears after the opening. */
+.next-event-note {
+  position: fixed;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(16px, 3vw, 40px);
+  z-index: 95;
+  width: min(360px, calc(100vw - 32px));
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent-deep) 45%, var(--bone-050));
+  border-radius: 14px;
+  background: var(--bone-050);
+  color: var(--ink-900);
+  box-shadow: 0 18px 50px rgb(32 18 12 / 28%);
+  opacity: 0;
+  transform: translateY(24px) rotate(1deg);
+  transition: opacity 0.45s ease, transform 0.55s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.next-event-note[hidden] { display: none; }
+.next-event-note.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+
+.next-event-note::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  border-radius: 13px 13px 0 0;
+  background: var(--accent-deep) url("../img/patterns/azulejo-octagram-red.svg") center / 25px;
+}
+
+.next-event-note__top,
+.next-event-note__body,
+.next-event-note__cta { display: flex; align-items: center; }
+.next-event-note__top { justify-content: space-between; margin-bottom: 12px; }
+.next-event-note__eyebrow { color: var(--accent-deep); font-size: var(--step--2); font-weight: 800; letter-spacing: 0.12em; }
+.next-event-note__close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--ink-900); font-size: 26px; cursor: pointer; }
+.next-event-note__close:hover,
+.next-event-note__close:focus-visible { background: color-mix(in srgb, var(--accent-deep) 12%, transparent); }
+.next-event-note__body { gap: 16px; align-items: flex-start; }
+.next-event-note__poster { width: 72px; height: 92px; flex: 0 0 72px; border-radius: 5px; object-fit: cover; }
+.next-event-note__title { margin: 0 0 4px; font-size: var(--step-0); line-height: 1.15; }
+.next-event-note__date { display: block; font-size: var(--step--1); color: var(--ink-700); }
+.next-event-note__status { display: inline-block; margin: 10px 0 0; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--accent-deep) 12%, var(--bone-050)); color: var(--accent-deep); font-size: var(--step--2); font-weight: 700; }
+.next-event-note__cta { justify-content: space-between; gap: 12px; margin-top: 16px; padding: 12px 14px; border-radius: 7px; background: var(--accent-deep); color: var(--bone-050); font-size: var(--step--1); font-weight: 700; text-decoration: none; }
+.next-event-note__cta:hover,
+.next-event-note__cta:focus-visible { background: var(--ink-900); color: var(--bone-050); }
+
+@media (prefers-reduced-motion: reduce) {
+  .next-event-note { transition: none; }
+}
+
 /* Rest of the hero content, reached by scrolling past the cover photo. */
 .hero-content {
   padding-block: var(--space-8);
@@ -1344,12 +1396,11 @@
 
 .staff-card:hover .staff-card__photo img,
 .staff-card:focus-within .staff-card__photo img {
-  filter: contrast(1.02) brightness(0.7);
-  transform: scale(1.04);
+  filter: contrast(1.02);
+  transform: scale(1.015);
 }
 
-/* Bottom scrim so the name/role stay legible over any photo; deepens on
-   hover to cover the extra info that slides in above it. */
+/* Bottom scrim keeps the name and role legible without hiding the portrait. */
 .staff-card__scrim {
   position: absolute;
   inset: 0;
@@ -1363,16 +1414,6 @@
   pointer-events: none;
 }
 
-.staff-card:hover .staff-card__scrim,
-.staff-card:focus-within .staff-card__scrim {
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--ink-900) 94%, transparent) 0%,
-    color-mix(in srgb, var(--ink-900) 80%, transparent) 58%,
-    color-mix(in srgb, var(--ink-900) 15%, transparent) 100%
-  );
-}
-
 .staff-card__info {
   position: absolute;
   inset: 0;
@@ -1380,6 +1421,10 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: var(--space-4);
+}
+
+.staff-card__info:has(.staff-card__networks) {
+  padding-bottom: calc(var(--space-4) + 48px);
 }
 
 .staff-card .compact-heading {
@@ -1407,42 +1452,26 @@
   opacity: 0.9;
 }
 
-/* The social row grows into the bottom of the card on hover. Because the
-   info block is anchored to the lower edge, opening this row moves the
-   existing role, name and study upward as one unit. */
+/* Social links stay in the lower-right corner without covering the profile
+   text or asking touch users to reveal them first. */
 .staff-card__networks {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-4);
   display: flex;
   gap: var(--space-2);
-  max-height: 0;
-  margin-top: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    max-height 0.4s var(--ease-out-expo),
-    margin-top 0.4s var(--ease-out-expo),
-    opacity 0.25s ease,
-    transform 0.4s var(--ease-out-expo);
-}
-
-.staff-card:hover .staff-card__networks,
-.staff-card:focus-within .staff-card__networks {
-  max-height: 32px;
-  margin-top: var(--space-3);
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .staff-card__network {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
   border: 1.5px solid color-mix(in srgb, var(--bone-050) 65%, transparent);
   border-radius: 999px;
   color: var(--bone-050);
-  background: color-mix(in srgb, var(--ink-900) 18%, transparent);
+  background: color-mix(in srgb, var(--ink-900) 72%, transparent);
   text-decoration: none;
   transition:
     color var(--dur-fast) ease,
@@ -1452,8 +1481,8 @@
 }
 
 .staff-card__network svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 a.staff-card__network:hover,
@@ -1463,12 +1492,6 @@ a.staff-card__network:focus-visible {
   background: var(--bone-050);
   transform: translateY(-2px);
   outline: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .staff-card__networks {
-    transition: none;
-  }
 }
 
 /* Collapsed by default via the 0fr row track; the hover/focus state opens
@@ -1853,44 +1876,10 @@ img.history-epilogue__media {
   --pp-ratio: 4 / 3;
 }
 
-/* Join / membership CTA ------------------------------------------------------
-   A single centered column instead of a two-column layout: one clear
-   invitation, not a benefits list next to a separate form card. */
+/* Join / membership CTA ------------------------------------------------------ */
 
 .join-section .wrap {
   max-width: 720px;
-}
-
-.join-benefits {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-6);
-  list-style: none;
-  margin: var(--space-5) 0 0;
-  padding: 0;
-}
-
-.join-benefits li {
-  padding-top: var(--space-4);
-  border-top: 2px solid var(--accent-deep);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--step-0);
-  line-height: 1.35;
-  color: var(--ink-900);
-}
-
-@media (max-width: 720px) {
-  .join-benefits {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-}
-
-.join-open-note {
-  margin-top: var(--space-5);
-  font-size: var(--step--1);
-  color: var(--ink-700);
 }
 
 .join-cta {

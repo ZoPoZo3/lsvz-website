@@ -60,6 +60,22 @@
     </div>
   </header>
 
+  <aside class="next-event-note" id="next-event-note" aria-label="Próximo evento" data-i18n-aria="homeNotice.label" hidden>
+    <div class="next-event-note__top">
+      <span class="next-event-note__eyebrow" data-i18n="homeNotice.kicker">PRÓXIMO ENCUENTRO</span>
+      <button class="next-event-note__close" type="button" aria-label="Cerrar aviso" data-i18n-aria="homeNotice.close">×</button>
+    </div>
+    <div class="next-event-note__body">
+      <img class="next-event-note__poster" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="" width="72" height="92" />
+      <div>
+        <h2 class="next-event-note__title">Próximo evento</h2>
+        <time class="next-event-note__date"></time>
+        <p class="next-event-note__status"></p>
+      </div>
+    </div>
+    <a class="next-event-note__cta" href="events-upcoming.html"><span data-i18n="homeNotice.cta">Ver próximos eventos</span><span aria-hidden="true">↗</span></a>
+  </aside>
+
   <main id="main">
     <!-- Cover photo hero: full-bleed photo with a slow Ken Burns drift and
          the LSVZ mark playing its intro animation on top. No scroll-driven
@@ -246,5 +262,6 @@
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/home-event-strip.js"></script>
+  <script src="assets/js/home-next-event.js"></script>
 </body>
 </html>
