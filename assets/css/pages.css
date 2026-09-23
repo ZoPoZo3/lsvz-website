@@ -1398,6 +1398,8 @@
   font-weight: 500;
   line-height: 1.25;
   opacity: 0.9;
+  hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
 /* Social links stay in the lower-right corner without covering the profile
