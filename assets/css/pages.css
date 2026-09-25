@@ -1089,19 +1089,39 @@
 }
 
 .drift-hero__hint {
-  position: absolute;
+  position: fixed;
   left: 50%;
-  bottom: var(--space-6);
-  z-index: 2;
-  transform: translateX(-50%);
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink-900) 82%, transparent);
+  color: var(--bone-050);
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.45s ease, transform 0.45s var(--ease-out-expo);
   pointer-events: none;
 }
 
+.drift-hero__hint.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.drift-hero__hint span {
+  white-space: nowrap;
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 .drift-hero__hint svg {
-  width: 22px;
-  height: 22px;
-  color: var(--bone-050);
-  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.4));
+  width: 18px;
+  height: 18px;
   animation: hint-bounce 1.8s ease-in-out infinite;
 }
 
@@ -1130,7 +1150,10 @@
     transform: none;
   }
   .drift-hero__hint {
-    display: none;
+    transition: opacity 0.2s ease;
+  }
+  .drift-hero__hint svg {
+    animation: none;
   }
 }
 

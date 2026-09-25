@@ -92,6 +92,7 @@
       "eventsPast.kicker": "Look back",
       "eventsPast.title": "Past events",
       "eventsPast.lede": "A photo record of every party, gathering and celebration LSVZ has hosted. Step into an event to see who was there.",
+      "eventsPast.scrollHint": "Scroll to see the events",
 
       "cta.seePhotos": "See photos",
       "cta.seeMorePhotos": "See more photos",
@@ -126,7 +127,7 @@
       "footer.about.body": "Latino & Hispanic Student Association of Zurich.",
       "footer.nav.title": "Explore",
       "footer.contact.title": "Contact",
-      "footer.contact.email": "hello@lsvz.ch",
+      "footer.contact.email": "lsvzorganisation@gmail.com",
       "footer.rights": "All rights reserved.",
       "footer.credit": "Made with care in Zurich."
     },
@@ -216,6 +217,7 @@
       "eventsPast.kicker": "Mirando atrás",
       "eventsPast.title": "Eventos pasados",
       "eventsPast.lede": "Un archivo fotográfico de cada fiesta, quedada y celebración que ha organizado LSVZ. Entra en cualquier evento para ver quién estuvo allí.",
+      "eventsPast.scrollHint": "Desliza para ver los eventos",
 
       "cta.seePhotos": "Ver fotos",
       "cta.seeMorePhotos": "Ver más fotos",
@@ -250,7 +252,7 @@
       "footer.about.body": "Asociación de Estudiantes Latinos e Hispanohablantes de Zürich.",
       "footer.nav.title": "Explorar",
       "footer.contact.title": "Contacto",
-      "footer.contact.email": "hello@lsvz.ch",
+      "footer.contact.email": "lsvzorganisation@gmail.com",
       "footer.rights": "Todos los derechos reservados.",
       "footer.credit": "Hecho con cariño en Zúrich."
     },
@@ -340,6 +342,7 @@
       "eventsPast.kicker": "Rückblick",
       "eventsPast.title": "Vergangene Events",
       "eventsPast.lede": "Ein Fotoarchiv jeder Party, jedes Treffens und jeder Feier, die LSVZ veranstaltet hat. Öffne ein Event und sieh nach, wer dabei war.",
+      "eventsPast.scrollHint": "Scrollen, um die Events zu sehen",
 
       "cta.seePhotos": "Fotos ansehen",
       "cta.seeMorePhotos": "Mehr Fotos ansehen",
@@ -374,7 +377,7 @@
       "footer.about.body": "Latino & Hispanic Student Association of Zurich.",
       "footer.nav.title": "Entdecken",
       "footer.contact.title": "Kontakt",
-      "footer.contact.email": "hello@lsvz.ch",
+      "footer.contact.email": "lsvzorganisation@gmail.com",
       "footer.rights": "Alle Rechte vorbehalten.",
       "footer.credit": "Mit Liebe in Zürich gemacht."
     }

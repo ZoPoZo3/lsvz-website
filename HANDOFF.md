@@ -48,7 +48,7 @@ PRODUCT.md → contexto de producto escrito al principio (usuarios, misión, pos
 
 - Fotos: solo `home/hero.jpg` es una foto real. El resto (historia ×6, eventos pasados ×7, equipo ×6) son cajas `.placeholder-photo` con el patrón de azulejo de fondo — buscar `placeholder-photo` en cada página para encontrarlas.
 - Nombres/cargos/bios del equipo (`staff.html`) son ficticios ("Full Name", etc.).
-- Enlaces reales de Instagram (ahora `#`) y el email de contacto (`hello@lsvz.ch`, a confirmar si es real).
+- Enlaces reales de Instagram (ahora `#`). El email de contacto confirmado es `lsvzorganisation@gmail.com`.
 - Cifras del panel de estadísticas del inicio (año de fundación "20XX", "150+" miembros, "12+" eventos/año) son inventadas — falta confirmar los números reales con el usuario.
 - URL del Google Form y URLs de tickets por evento (ver arriba).
 

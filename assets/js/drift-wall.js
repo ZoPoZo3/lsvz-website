@@ -265,6 +265,17 @@
     if (!wallRoot || !track) return;
 
     var wall = initDriftWall(wallRoot);
+    if (hint) {
+      var hintReady = false;
+      function syncHint() {
+        hint.classList.toggle("is-visible", hintReady && window.scrollY < 16);
+      }
+      window.addEventListener("scroll", syncHint, { passive: true });
+      window.setTimeout(function () {
+        hintReady = true;
+        syncHint();
+      }, 2500);
+    }
     var reduced = prefersReducedMotion();
     if (reduced) return;
 
@@ -283,8 +294,6 @@
         content.style.opacity = String(fadeProgress);
         content.style.transform = "translateY(" + (22 * (1 - fadeProgress)) + "px)";
       }
-      if (hint) hint.style.opacity = String(1 - Math.min(1, progress / 0.08));
-
       wall.setBackgroundMode(progress > 0.03);
     }
 
