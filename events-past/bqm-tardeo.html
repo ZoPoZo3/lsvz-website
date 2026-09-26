@@ -2,23 +2,23 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <script src="assets/js/boot.js"></script>
+  <script src="../assets/js/boot.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#F6EFE4" />
-  <title>Upcoming Events — LSVZ</title>
-  <meta name="description" content="Upcoming LSVZ events for Latino and Hispanic students in Zurich." />
+  <title>BQM Tardeo — LSVZ</title>
+  <meta name="description" content="Photos from BQM Tardeo at Polyterrasse, 25 September 2026." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%238C2A1E'%3E%3Ccircle cx='29' cy='20' r='9'/%3E%3Ccircle cx='24.5' cy='27.79' r='9'/%3E%3Ccircle cx='15.5' cy='27.79' r='9'/%3E%3Ccircle cx='11' cy='20' r='9'/%3E%3Ccircle cx='15.5' cy='12.21' r='9'/%3E%3Ccircle cx='24.5' cy='12.21' r='9'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3.5' fill='%23F6EFE4'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
-  <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/pages.css" />
   <style>
-    /* This page's signature azulejo motif: bloom */
+    /* Shares the Past Events section's signature azulejo motif: octagram */
     :root {
-      --tile-red: url("../img/patterns/azulejo-bloom-red.svg");
-      --tile-bone: url("../img/patterns/azulejo-bloom-bone.svg");
+      --tile-red: url("../img/patterns/azulejo-octagram-red.svg");
+      --tile-bone: url("../img/patterns/azulejo-octagram-bone.svg");
     }
   </style>
 </head>
@@ -36,7 +36,7 @@
 
   <header class="site-header">
     <div class="wrap site-header__bar">
-      <a class="brand" href="index.html">
+      <a class="brand" href="../index.html">
         <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
           <g fill="var(--accent-deep)">
             <circle cx="29" cy="20" r="9" />
@@ -52,12 +52,12 @@
       </a>
       <nav class="nav" id="primary-nav" aria-label="Navegación principal" data-i18n-aria="a11y.nav">
         <ul class="nav__links">
-          <li><a href="index.html" data-i18n="nav.home">Inicio</a></li>
-          <li><a href="history.html" data-i18n="nav.history">Historia</a></li>
-          <li><a href="events-upcoming.html" data-i18n="nav.upcoming" aria-current="page">Próximos eventos</a></li>
-          <li><a href="events-past.html" data-i18n="nav.past">Eventos pasados</a></li>
-          <li><a href="staff.html" data-i18n="nav.staff">Equipo</a></li>
-          <li><a href="join.html" data-i18n="nav.join">Hazte miembro</a></li>
+          <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+          <li><a href="../history.html" data-i18n="nav.history">Historia</a></li>
+          <li><a href="../events-upcoming.html" data-i18n="nav.upcoming">Próximos eventos</a></li>
+          <li><a href="../events-past.html" data-i18n="nav.past" aria-current="page">Eventos pasados</a></li>
+          <li><a href="../staff.html" data-i18n="nav.staff">Equipo</a></li>
+          <li><a href="../join.html" data-i18n="nav.join">Hazte miembro</a></li>
         </ul>
         <div class="lang-switch" role="group" aria-label="Elegir idioma" data-i18n-aria="a11y.language" data-active="es">
           <button type="button" class="lang-switch__trigger" aria-controls="language-menu" aria-expanded="false">
@@ -77,64 +77,37 @@
   </header>
 
   <main id="main">
-    <section class="page-hero wrap">
+    <section class="page-hero wrap event-gallery-hero">
       <div class="page-hero__eyebrow-free reveal">
-        <span class="tag" data-i18n="eventsUpcoming.kicker">Reserva la fecha</span>
+        <a class="tag event-gallery-hero__back" href="../events-past.html" data-i18n="cta.backToPastEvents">Eventos pasados</a>
       </div>
-      <h1 class="reveal" data-i18n="eventsUpcoming.title" data-split-words>Próximos eventos</h1>
-      <p class="reveal" data-i18n="eventsUpcoming.lede">Aquí publicamos las próximas fechas para encontrarnos, bailar y compartir comunidad en Zúrich.</p>
+      <h1 class="reveal" data-split-words>BQM Tardeo</h1>
+      <p class="reveal event-gallery-hero__date" data-event-date="2026-09-25">25 de septiembre de 2026</p>
     </section>
 
     <div class="tile-divider tile-divider--bone" aria-hidden="true"></div>
 
-    <section class="section">
+    <section class="section event-gallery-section">
       <div class="wrap">
-        <div class="upcoming-events reveal-group">
-          <article class="upcoming-event reveal-item" data-event-start="2026-10-09T23:30:00+02:00" data-event-end="2026-10-10T04:30:00+02:00">
-            <div class="upcoming-event__main">
-              <picture class="upcoming-event__poster upcoming-event__poster--delirio">
-                <source srcset="assets/img/photos/events-upcoming/delirio-vol-3-480.webp 480w, assets/img/photos/events-upcoming/delirio-vol-3-960.webp 960w" sizes="(max-width: 480px) 34vw, (max-width: 860px) 13rem, 11rem" type="image/webp" />
-                <img src="assets/img/photos/events-upcoming/delirio-vol-3-960.webp" alt="Cartel de DELIRIO Vol. 3 en JADE Club" width="960" height="1200" fetchpriority="high" decoding="async" />
-              </picture>
-              <div class="upcoming-event__intro">
-                <h2>DELIRIO [VOL.3]</h2>
-                <p class="upcoming-event__description" data-i18n="eventsUpcoming.delirio.body">DELIRIO vuelve con su tercera edición en JADE Club: una fiesta latina con reguetón, club classics y pop anthems hasta la madrugada.</p>
-              </div>
-            </div>
-            <div class="upcoming-event__details">
-              <dl class="upcoming-event__facts">
-                <div><dt data-i18n="eventsUpcoming.dateLabel">Fecha</dt><dd><time datetime="2026-10-09" data-event-date="2026-10-09">9 de octubre de 2026</time></dd></div>
-                <div><dt data-i18n="eventsUpcoming.timeLabel">Hora</dt><dd>23:30–04:30</dd></div>
-                <div><dt data-i18n="eventsUpcoming.placeLabel">Lugar</dt><dd>JADE Club</dd></div>
-              </dl>
-              <div class="upcoming-event__actions">
-                <a class="btn btn--primary" href="https://eventfrog.ch/en/p/parties/latin-brasil/delirio-vol-3-7506109415793128306.html" target="_blank" rel="noopener" data-i18n="cta.tickets">Tickets</a>
-              </div>
-            </div>
-          </article>
+        <div class="masonry reveal-group">
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/01.jpg" aria-label="Abrir foto 1" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/01.jpg" alt="" loading="lazy" width="1065" height="1600" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/01-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/01-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/02.jpg" aria-label="Abrir foto 2" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/02.jpg" alt="" loading="lazy" width="1065" height="1600" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/02-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/02-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/03.jpg" aria-label="Abrir foto 3" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/03.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/03-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/03-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/04.jpg" aria-label="Abrir foto 4" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/04.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/04-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/04-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/05.jpg" aria-label="Abrir foto 5" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/05.jpg" alt="" loading="lazy" width="1065" height="1600" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/05-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/05-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/06.jpg" aria-label="Abrir foto 6" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/06.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/06-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/06-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/07.jpg" aria-label="Abrir foto 7" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/07.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/07-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/07-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/08.jpg" aria-label="Abrir foto 8" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/08.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/08-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/08-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/09.jpg" aria-label="Abrir foto 9" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/09.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/09-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/09-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/10.jpg" aria-label="Abrir foto 10" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/10.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/10-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/10-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/11.jpg" aria-label="Abrir foto 11" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/11.jpg" alt="" loading="lazy" width="1065" height="1600" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/11-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/11-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/12.jpg" aria-label="Abrir foto 12" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/12.jpg" alt="" loading="lazy" width="1065" height="1600" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/12-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/12-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
+          <a class="reveal-item" href="../assets/img/photos/events-past/bqm-tardeo/13.jpg" aria-label="Abrir foto 13" target="_blank" rel="noopener"><img src="../assets/img/photos/events-past/bqm-tardeo/13.jpg" alt="" loading="lazy" width="1600" height="1065" decoding="async" srcset="../assets/img/optimized/events-past/bqm-tardeo/13-480.webp 480w, ../assets/img/optimized/events-past/bqm-tardeo/13-960.webp 960w" sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 900px) 46vw, 31vw" /></a>
         </div>
+      </div>
 
-        <!-- Plantilla conservada para temporadas sin eventos. Sustituye el
-             bloque .upcoming-events por este contenido cuando el calendario
-             vuelva a estar vacío. -->
-        <template id="upcoming-empty-state">
-          <div class="empty-state reveal">
-            <svg class="empty-state__mark" viewBox="0 0 40 40" aria-hidden="true">
-              <g fill="var(--accent-deep)">
-                <circle cx="29" cy="20" r="9" />
-                <circle cx="24.5" cy="27.79" r="9" />
-                <circle cx="15.5" cy="27.79" r="9" />
-                <circle cx="11" cy="20" r="9" />
-                <circle cx="15.5" cy="12.21" r="9" />
-                <circle cx="24.5" cy="12.21" r="9" />
-              </g>
-              <circle cx="20" cy="20" r="3.5" fill="var(--bg)" />
-            </svg>
-            <h2 data-i18n="eventsUpcoming.emptyTitle">Todavía no hay nada en el calendario</h2>
-            <p data-i18n="eventsUpcoming.emptyBody">Estamos preparando el próximo evento. Vuelve pronto o síguenos en Instagram para enterarte.</p>
-            <div class="hero__cta-row"><a class="btn btn--primary" href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" data-i18n="cta.instagram">Síguenos en Instagram</a><a class="btn btn--ghost" href="events-past.html" data-i18n="cta.browsePast">Ver eventos pasados</a></div>
-          </div>
-        </template>
+      <div class="wrap event-gallery-cta">
+        <a class="btn btn--primary" href="https://drive.google.com/drive/folders/1CNhOZMrfIXB8jOn0U4A1M11-jyfKbcIx?usp=drive_link" target="_blank" rel="noopener" data-i18n="cta.seeMorePhotos">Ver más fotos</a>
       </div>
     </section>
 
@@ -171,11 +144,11 @@
       <div>
         <h2 class="compact-heading" data-i18n="footer.nav.title">Explorar</h2>
         <ul class="footer-links">
-          <li><a href="history.html" data-i18n="nav.history">Historia</a></li>
-          <li><a href="events-upcoming.html" data-i18n="nav.upcoming">Próximos eventos</a></li>
-          <li><a href="events-past.html" data-i18n="nav.past">Eventos pasados</a></li>
-          <li><a href="staff.html" data-i18n="nav.staff">Equipo</a></li>
-          <li><a href="join.html" data-i18n="nav.join">Hazte miembro</a></li>
+          <li><a href="../history.html" data-i18n="nav.history">Historia</a></li>
+          <li><a href="../events-upcoming.html" data-i18n="nav.upcoming">Próximos eventos</a></li>
+          <li><a href="../events-past.html" data-i18n="nav.past">Eventos pasados</a></li>
+          <li><a href="../staff.html" data-i18n="nav.staff">Equipo</a></li>
+          <li><a href="../join.html" data-i18n="nav.join">Hazte miembro</a></li>
         </ul>
       </div>
       <div>
@@ -193,7 +166,8 @@
   </footer>
 
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-  <script src="assets/js/i18n.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

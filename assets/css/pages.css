@@ -675,10 +675,6 @@
   filter: blur(16px) brightness(0.5);
 }
 
-.upcoming-event__poster--bqm {
-  --poster-backdrop: url("../img/photos/events-upcoming/bqm-tardeo-480.webp");
-}
-
 .upcoming-event__poster--delirio {
   --poster-backdrop: url("../img/photos/events-upcoming/delirio-vol-3-480.webp");
 }

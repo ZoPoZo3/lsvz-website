@@ -8,6 +8,7 @@
 
 (function () {
   var EVENTS = [
+    { slug: "bqm-tardeo", name: "BQM Tardeo", date: "25 Sep 2026" },
     { slug: "lsvz-x-mapz-padel-tournament", name: "LSVZ x MAPZ Padel Tournament", date: "25 Apr 2026" },
     { slug: "ski-weekend-vol-3", name: "Ski-Weekend [Vol.3]", date: "27-29 Mar 2026" },
     { slug: "delirio-vol-2", name: "Delirio [Vol.2]", date: "20 Mar 2026" },
