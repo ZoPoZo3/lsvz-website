@@ -86,7 +86,6 @@
       "eventsUpcoming.dateLabel": "Date",
       "eventsUpcoming.timeLabel": "Time",
       "eventsUpcoming.placeLabel": "Place",
-      "eventsUpcoming.delirio.body": "DELIRIO returns for its third edition at JADE Club: a Latin party with reggaeton, club classics and pop anthems until the early hours.",
 
       "eventsPast.kicker": "Look back",
       "eventsPast.title": "Past events",
@@ -210,7 +209,6 @@
       "eventsUpcoming.dateLabel": "Fecha",
       "eventsUpcoming.timeLabel": "Hora",
       "eventsUpcoming.placeLabel": "Lugar",
-      "eventsUpcoming.delirio.body": "DELIRIO vuelve con su tercera edición en JADE Club: una fiesta latina con reguetón, club classics y pop anthems hasta la madrugada.",
 
       "eventsPast.kicker": "Mirando atrás",
       "eventsPast.title": "Eventos pasados",
@@ -334,7 +332,6 @@
       "eventsUpcoming.dateLabel": "Datum",
       "eventsUpcoming.timeLabel": "Zeit",
       "eventsUpcoming.placeLabel": "Ort",
-      "eventsUpcoming.delirio.body": "DELIRIO kehrt für die dritte Ausgabe in den JADE Club zurück: eine Latin-Party mit Reggaeton, Club Classics und Pop-Hymnen bis in die frühen Morgenstunden.",
 
       "eventsPast.kicker": "Rückblick",
       "eventsPast.title": "Vergangene Events",

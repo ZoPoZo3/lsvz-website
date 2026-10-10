@@ -1,12 +1,12 @@
 /* On phones use native scrolling; on desktop retain the existing slow drift. */
 (function () {
   var EVENTS = [
+    { slug: 'delirio-vol-3', name: 'DELIRIO [VOL.3]', date: '2026-10-09' },
+    { slug: 'bqm-tardeo', name: 'BQM Tardeo', date: '2026-09-25' },
     { slug: 'lsvz-x-mapz-padel-tournament', name: 'LSVZ x MAPZ Padel Tournament', date: '2026-04-25' },
     { slug: 'ski-weekend-vol-3', name: 'Ski-Weekend [Vol.3]', date: '2026-03-27', end: '2026-03-29' },
     { slug: 'delirio-vol-2', name: 'Delirio [Vol.2]', date: '2026-03-20' },
-    { slug: 'white-party', name: 'White Party', date: '2025-04-04' },
-    { slug: 'papaya-vol-8', name: 'Papaya [Vol.8]', date: '2025-03-07' },
-    { slug: 'halloween-party', name: 'Halloween Party', date: '2024-10-31' }
+    { slug: 'white-party', name: 'White Party', date: '2025-04-04' }
   ];
   function init() {
     var root = document.querySelector('.event-teaser__viewport');
