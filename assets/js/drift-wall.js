@@ -31,7 +31,7 @@
     { slug: "menage-a-quatre", name: "Ménage à Quatre", date: "11 May 2023" }
   ].map(function (e) {
     return {
-      image: "assets/img/optimized/events-past/" + e.slug + "/cover-480.webp",
+      image: "assets/img/optimized/events-past/" + e.slug + "/cover-480.webp" + (e.slug === "delirio-vol-3" ? "?v=2" : ""),
       title: e.name,
       date: e.date
     };

@@ -18,7 +18,7 @@
       EVENTS.forEach(function (item) {
         var link = document.createElement('a'); link.className = 'event-teaser__item'; link.href = 'events-past/' + item.slug + '.html';
         if (copy) { link.dataset.clone = ''; link.setAttribute('aria-hidden','true'); link.tabIndex = -1; }
-        var img = document.createElement('img'); img.src = 'assets/img/optimized/events-past/' + item.slug + '/cover-480.webp'; img.alt = item.name; img.loading = 'lazy'; img.decoding = 'async'; img.width = 480; img.height = 600; img.draggable = false;
+        var img = document.createElement('img'); img.src = 'assets/img/optimized/events-past/' + item.slug + '/cover-480.webp' + (item.slug === 'delirio-vol-3' ? '?v=2' : ''); img.alt = item.name; img.loading = 'lazy'; img.decoding = 'async'; img.width = 480; img.height = 600; img.draggable = false;
         var caption = document.createElement('span'); caption.className = 'event-teaser__caption';
         var date = document.createElement('span'); date.className = 'event-teaser__date'; date.dataset.eventDate = item.date; date.dataset.dateShort = 'true'; if (item.end) date.dataset.eventEnd = item.end;
         var name = document.createElement('span'); name.className = 'event-teaser__name'; name.textContent = item.name;

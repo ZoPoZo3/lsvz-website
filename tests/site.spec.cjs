@@ -22,7 +22,7 @@ test('Gallery keyboard, focus return, language and reopening',async({page})=>{
 test('All pages and local image references load',async({page})=>{
  test.setTimeout(180000);
  const files=fs.readdirSync('.').filter(f=>f.endsWith('.html')).concat(fs.readdirSync('events-past').filter(f=>f.endsWith('.html')).map(f=>'events-past/'+f));let errors=[];page.on('pageerror',e=>errors.push(e.message));
- for(const file of files){const response=await page.goto('/'+file);expect(response.status()).toBe(200);await expect(page.locator('h1')).toHaveCount(1);const paths=await page.locator('img').evaluateAll(images=>images.flatMap(i=>[i.getAttribute('src'),...i.srcset.split(',').map(s=>s.trim().split(' ')[0])]).filter(Boolean));for(const p of paths){if(!p.startsWith('http')&&!p.startsWith('data:'))expect(fs.existsSync(require('node:path').resolve(require('node:path').dirname(file),p)),file+': '+p).toBe(true);}}
+ for(const file of files){const response=await page.goto('/'+file);expect(response.status()).toBe(200);await expect(page.locator('h1')).toHaveCount(1);const paths=await page.locator('img').evaluateAll(images=>images.flatMap(i=>[i.getAttribute('src'),...i.srcset.split(',').map(s=>s.trim().split(' ')[0])]).filter(Boolean));for(const p of paths){if(!p.startsWith('http')&&!p.startsWith('data:'))expect(fs.existsSync(require('node:path').resolve(require('node:path').dirname(file),p.split(/[?#]/)[0])),file+': '+p).toBe(true);}}
  expect(errors).toEqual([]);
 });
 test('No JavaScript keeps content and navigation usable',async({browser})=>{
