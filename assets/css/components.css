@@ -510,6 +510,23 @@
 }
 
 @media (max-width: 1100px) {
+  html.nav-locked {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  body.nav-locked {
+    position: fixed;
+    top: calc(-1 * var(--nav-scroll-y, 0px));
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  body.nav-locked .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
   .nav-toggle {
     display: block;
   }
@@ -525,6 +542,7 @@
     transform: translateX(100%);
     transition: transform var(--dur-med) var(--ease-out-expo);
     overflow-y: auto;
+    overscroll-behavior: contain;
     z-index: 1;
   }
   .nav.is-open {

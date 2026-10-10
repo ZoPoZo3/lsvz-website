@@ -19,6 +19,25 @@ test('Gallery keyboard, focus return, language and reopening',async({page})=>{
  await page.evaluate(()=>window.LSVZ_I18N.setLang('de'));await expect(page.getByRole('dialog')).toHaveAttribute('aria-label','Fotoansicht');
  await page.keyboard.press('Escape');await expect(first).toBeFocused();await expect(page.locator('main')).toHaveJSProperty('inert',false);await first.click();await expect(page.locator('.lightbox__counter')).toHaveText('1 / '+total);
 });
+test('Open mobile menu keeps its header fixed and restores page scroll',async({browser})=>{
+ for(const [width,height] of [[390,844],[390,568],[950,844]]){
+  const context=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:width===390,reducedMotion:'reduce'});
+  const page=await context.newPage();await page.goto('http://127.0.0.1:5173/events-past.html');
+  await page.evaluate(()=>window.scrollTo({top:900,behavior:'instant'}));
+  const original=await page.evaluate(()=>window.scrollY);
+  await page.locator('.nav-toggle').click();
+  await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded','true');
+  await expect(page.locator('.site-header')).toBeInViewport();
+  const locked=await page.evaluate(()=>window.scrollY);
+  await page.mouse.move(width/2,600);await page.mouse.wheel(0,1200);
+  await page.waitForTimeout(100);
+  expect(await page.evaluate(()=>window.scrollY)).toBe(locked);
+  expect(await page.locator('.site-header').evaluate(el=>Math.abs(el.getBoundingClientRect().top))).toBeLessThan(1);
+  await page.locator('.nav-toggle').click();
+  expect(await page.evaluate(()=>window.scrollY)).toBe(original);
+  await context.close();
+ }
+});
 test('All pages and local image references load',async({page})=>{
  test.setTimeout(180000);
  const files=fs.readdirSync('.').filter(f=>f.endsWith('.html')).concat(fs.readdirSync('events-past').filter(f=>f.endsWith('.html')).map(f=>'events-past/'+f));let errors=[];page.on('pageerror',e=>errors.push(e.message));

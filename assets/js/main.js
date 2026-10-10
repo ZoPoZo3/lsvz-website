@@ -30,6 +30,7 @@
     mobileNav.addEventListener('change', placeLanguageSwitch);
     var navBackground = document.querySelectorAll('main, .site-footer');
     var previousOverflow = '';
+    var lockedScrollY = 0;
     var header = document.querySelector('.site-header');
     if (header) new ResizeObserver(function () { document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px'); }).observe(header);
     // Created here rather than in each page's markup: a dimmed backdrop
@@ -45,7 +46,13 @@
       navToggle.setAttribute("aria-expanded", "false");
       nav.classList.remove("is-open");
       navScrim.classList.remove("is-open");
-      if (wasOpen) document.body.style.overflow = previousOverflow;
+      if (wasOpen) {
+        document.body.style.overflow = previousOverflow;
+        document.documentElement.classList.remove('nav-locked');
+        document.body.classList.remove('nav-locked');
+        document.body.style.removeProperty('--nav-scroll-y');
+        window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
+      }
       nav.inert = mobileNav.matches;
       navBackground.forEach(function (el) { el.inert = false; });
       if (wasOpen && mobileNav.matches) navToggle.focus();
@@ -53,12 +60,16 @@
 
     var openNav = function () {
       previousOverflow = document.body.style.overflow;
+      lockedScrollY = window.scrollY;
+      document.body.style.setProperty('--nav-scroll-y', lockedScrollY + 'px');
       nav.inert = false;
       navBackground.forEach(function (el) { el.inert = true; });
       navToggle.setAttribute("aria-expanded", "true");
       nav.classList.add("is-open");
       navScrim.classList.add("is-open");
       document.body.style.overflow = "hidden";
+      document.documentElement.classList.add('nav-locked');
+      document.body.classList.add('nav-locked');
       nav.querySelector('a').focus();
     };
 
