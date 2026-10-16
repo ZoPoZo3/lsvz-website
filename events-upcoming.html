@@ -89,22 +89,50 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="empty-state reveal">
-          <svg class="empty-state__mark" viewBox="0 0 40 40" aria-hidden="true">
-            <g fill="var(--accent-deep)">
-              <circle cx="29" cy="20" r="9" />
-              <circle cx="24.5" cy="27.79" r="9" />
-              <circle cx="15.5" cy="27.79" r="9" />
-              <circle cx="11" cy="20" r="9" />
-              <circle cx="15.5" cy="12.21" r="9" />
-              <circle cx="24.5" cy="12.21" r="9" />
-            </g>
-            <circle cx="20" cy="20" r="3.5" fill="var(--bg)" />
-          </svg>
-          <h2 data-i18n="eventsUpcoming.emptyTitle">Todavía no hay nada en el calendario</h2>
-          <p data-i18n="eventsUpcoming.emptyBody">Estamos preparando el próximo evento. Vuelve pronto o síguenos en Instagram para enterarte.</p>
-          <div class="hero__cta-row"><a class="btn btn--primary" href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" data-i18n="cta.instagram">Síguenos en Instagram</a><a class="btn btn--ghost" href="events-past.html" data-i18n="cta.browsePast">Ver eventos pasados</a></div>
+        <div class="upcoming-events reveal-group">
+          <article class="upcoming-event reveal-item" data-event-start="2026-11-14T15:00:00+01:00" data-event-end="2026-11-14T22:00:00+01:00">
+            <div class="upcoming-event__main">
+              <picture class="upcoming-event__poster upcoming-event__poster--padel">
+                <source srcset="assets/img/photos/events-upcoming/padel-vol-2-480.webp 480w, assets/img/photos/events-upcoming/padel-vol-2-960.webp 960w" sizes="(max-width: 480px) 34vw, (max-width: 860px) 13rem, 11rem" type="image/webp" />
+                <img src="assets/img/photos/events-upcoming/padel-vol-2-960.webp" alt="Cartel del torneo de pádel LSVZ x MAPZ Vol. 2" width="960" height="1151" fetchpriority="high" decoding="async" />
+              </picture>
+              <div class="upcoming-event__intro">
+                <h2>LSVZ x MAPZ Padel Tournament Vol. 2</h2>
+                <p class="upcoming-event__description" data-i18n="eventsUpcoming.padel.body">Vuelve el torneo de pádel LSVZ x MAPZ: juega en pareja, conoce gente y disfruta de un DJ en directo. Cada equipo tiene al menos una hora de juego garantizada.</p>
+              </div>
+            </div>
+            <div class="upcoming-event__details">
+              <dl class="upcoming-event__facts">
+                <div><dt data-i18n="eventsUpcoming.dateLabel">Fecha</dt><dd><time datetime="2026-11-14" data-event-date="2026-11-14">14 de noviembre de 2026</time></dd></div>
+                <div><dt data-i18n="eventsUpcoming.timeLabel">Hora</dt><dd>15:00–22:00</dd></div>
+                <div><dt data-i18n="eventsUpcoming.placeLabel">Lugar</dt><dd>Unipadel Zürich, Rümlang</dd></div>
+              </dl>
+              <div class="upcoming-event__actions">
+                <a class="btn btn--primary" href="https://eventfrog.ch/de/p/sport-fitness/sonstige-veranstaltungen/lsvz-x-mapz-padel-tournament-vol2-ruemlang-7516802343091855632.html" target="_blank" rel="noopener" data-i18n="cta.tickets">Tickets</a>
+              </div>
+            </div>
+          </article>
         </div>
+
+        <!-- Plantilla para cuando no haya eventos programados. -->
+        <template id="upcoming-empty-state">
+          <div class="empty-state reveal">
+            <svg class="empty-state__mark" viewBox="0 0 40 40" aria-hidden="true">
+              <g fill="var(--accent-deep)">
+                <circle cx="29" cy="20" r="9" />
+                <circle cx="24.5" cy="27.79" r="9" />
+                <circle cx="15.5" cy="27.79" r="9" />
+                <circle cx="11" cy="20" r="9" />
+                <circle cx="15.5" cy="12.21" r="9" />
+                <circle cx="24.5" cy="12.21" r="9" />
+              </g>
+              <circle cx="20" cy="20" r="3.5" fill="var(--bg)" />
+            </svg>
+            <h2 data-i18n="eventsUpcoming.emptyTitle">Todavía no hay nada en el calendario</h2>
+            <p data-i18n="eventsUpcoming.emptyBody">Estamos preparando el próximo evento. Vuelve pronto o síguenos en Instagram para enterarte.</p>
+            <div class="hero__cta-row"><a class="btn btn--primary" href="https://www.instagram.com/lsvz.official/" target="_blank" rel="noopener" data-i18n="cta.instagram">Síguenos en Instagram</a><a class="btn btn--ghost" href="events-past.html" data-i18n="cta.browsePast">Ver eventos pasados</a></div>
+          </div>
+        </template>
       </div>
     </section>
 

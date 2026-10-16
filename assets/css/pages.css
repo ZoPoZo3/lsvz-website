@@ -633,6 +633,13 @@
   margin-inline: auto;
 }
 
+.upcoming-events > .upcoming-event:only-child {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: calc((60rem - var(--space-5)) / 2);
+  justify-self: center;
+}
+
 .upcoming-event {
   display: flex;
   flex-direction: column;
@@ -665,6 +672,10 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--ink-900);
+}
+
+.upcoming-event__poster--padel {
+  --poster-backdrop: url("../img/photos/events-upcoming/padel-vol-2-480.webp");
 }
 
 .upcoming-event__poster::before {
