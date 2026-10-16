@@ -87,6 +87,7 @@
       "eventsUpcoming.timeLabel": "Time",
       "eventsUpcoming.placeLabel": "Place",
       "eventsUpcoming.padel.body": "The LSVZ x MAPZ padel tournament is back: play with a partner, meet new people and enjoy a live DJ. Every team is guaranteed at least one hour on court.",
+      "eventsUpcoming.futsal.body": "The tournament starts with a group stage. The best teams advance to the knockout bracket, leading all the way to the grand final. Find full details at",
 
       "eventsPast.kicker": "Look back",
       "eventsPast.title": "Past events",
@@ -211,6 +212,7 @@
       "eventsUpcoming.timeLabel": "Hora",
       "eventsUpcoming.placeLabel": "Lugar",
       "eventsUpcoming.padel.body": "Vuelve el torneo de pádel LSVZ x MAPZ: juega en pareja, conoce gente y disfruta de un DJ en directo. Cada equipo tiene al menos una hora de juego garantizada.",
+      "eventsUpcoming.futsal.body": "El torneo comienza con una fase de grupos. Los mejores equipos pasan a las eliminatorias hasta llegar a la gran final. Consulta todos los detalles en",
 
       "eventsPast.kicker": "Mirando atrás",
       "eventsPast.title": "Eventos pasados",
@@ -335,6 +337,7 @@
       "eventsUpcoming.timeLabel": "Zeit",
       "eventsUpcoming.placeLabel": "Ort",
       "eventsUpcoming.padel.body": "Das LSVZ x MAPZ Padelturnier ist zurück: Spielt zu zweit, lernt neue Leute kennen und freut euch auf Musik von einem Live-DJ. Jedes Team spielt garantiert mindestens eine Stunde.",
+      "eventsUpcoming.futsal.body": "Das Turnier beginnt mit einer Gruppenphase. Die besten Teams ziehen in die K.-o.-Runde ein und spielen bis zum großen Finale. Alle Details findest du auf",
 
       "eventsPast.kicker": "Rückblick",
       "eventsPast.title": "Vergangene Events",
